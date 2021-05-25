@@ -4,8 +4,10 @@ export default makeStyles(theme => ({
     drive: {
         display: 'flex', 
         height: '100vh',
+        width: '110px',
         overflow: 'auto',
-        background: '#292929',
+        marginRight: 3,
+        background: '#424242',
         '& .MuiTableCell-root':{
             whiteSpace: 'nowrap',
             color: '#fff'
@@ -40,5 +42,11 @@ export default makeStyles(theme => ({
             paddingBottom: 0,
             height: 40
         }
-    }
+    },
+    loader: {
+        position: 'absolute',
+        zIndex: 100,
+        top: '50%',
+        left: '50%',
+    },
 }))

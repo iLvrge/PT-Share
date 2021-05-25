@@ -1,19 +1,27 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import { useLocation } from "react-router-dom"
+import CircularProgress from '@material-ui/core/CircularProgress'
+
 import VirtualizedTable from "../VirtualizedTable"
 import useStyles from './styles'
+
+const numberWithCommas = (x) => {
+    return x != undefined ? x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : ''
+}
 
 const Assets = ({handleIllustration, apiURL}) => {
 
     const COLUMNS = [
         {
-        width: 100, 
-        minWidth: 100,
-        flexGrow: 1,     
-        label: "Assets",
-        dataKey: "asset",
-        align: "left",
-        paddingLeft: 10
+            width: 100, 
+            minWidth: 100,
+            flexGrow: 1,     
+            staticIcon: "US",
+            format: numberWithCommas,
+            label: "Assets",
+            dataKey: "asset",
+            align: "left",
+            paddingLeft: 20
         },
     ]
     const classes = useStyles()
@@ -28,7 +36,6 @@ const Assets = ({handleIllustration, apiURL}) => {
     const [ selectRow, setSelectedRow ] = useState( [] )
     
     useEffect(() => {
-        console.log('location', location)
         const {pathname} = location
 
         if( pathname != null  && pathname != '' && pathname != '/' ) {
@@ -76,7 +83,6 @@ const Assets = ({handleIllustration, apiURL}) => {
                         columns={COLUMNS}
                         onSelect={handleClick}
                         defaultSelectAll={selectedAll}
-                        disableHeader={true}
                         responsive={true}
                         width={width} 
                         containerStyle={{ 
@@ -88,7 +94,7 @@ const Assets = ({handleIllustration, apiURL}) => {
                         }}
                     /> 
                 :
-                'Loading...'
+                <CircularProgress className={classes.loader} /> 
             }
         </div>         
     )

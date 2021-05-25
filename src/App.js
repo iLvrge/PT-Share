@@ -36,6 +36,7 @@ const App = () => {
   const [ usptoMode, setUsptoMode ] = useState(false)
   const [ asset, setAsset ] = useState(null)	
   const [isDrag, setIsDrag] = useState(false);
+  const [isDragRight, setIsDragRight] = useState(false);
   const apiURL = 'https://betapp.patentrack.com/'
 
 
@@ -56,6 +57,12 @@ const App = () => {
   }
   
   const handleIllustration = useCallback(async (asset, shareCode) => {
+    if(pdfView === true && usptoMode == false) {
+      setIllustrationSize('100%')
+    } else if(usptoMode == true){
+      setAsset(asset)
+    }
+    setPDFView(false)
     const request = new Request(`${apiURL}share/${asset}${shareCode}`);
 			fetch(request)
 			.then(response => {
@@ -82,38 +89,35 @@ const App = () => {
     
   }
 
-  const handlePdfView = (obj) => {		
-    if(pdfView === false) {
-      if(typeof obj.document_file != 'undefined') {
-        setIllustrationSize('70%')
-        setPDFFile({ document: obj.document_file, form: obj.document_form, agreement: obj.document_agreement }) 
-        setPDFView(true)
-        setPdfTabIndex(2) 
-        if( usptoMode === true ) {
-          setLeftBarSize('50%')
-        } else {
-          setLeftBarSize('94.5%')
-        }
-      } 
-    } else {
+  const handlePdfView = (obj) => {		    
+    if(Object.keys(obj).length > 0 && typeof obj.document_file != 'undefined') {
+      setIllustrationSize('50%')
+      setPDFFile({ document: obj.document_file, form: obj.document_form, agreement: obj.document_agreement }) 
+      setPDFView(true)
+      setPdfTabIndex(2) 
+      if( usptoMode === true ) {
+        setLeftBarSize('50%')
+      } else {
+        setLeftBarSize('100%')
+      }
+    }  else {
       setPDFFile({ document: '', form: '', agreement: '' }) 
       setPDFView( false )
       if(usptoMode === false) {
         setIllustrationSize('100%')
       } else {
         setLeftBarSize('0%')
-      }
-    }
-    
+      } 
+    }    
 	}
 
   const handleUSPTO = (mode, patentObj) => {    
     setUsptoMode(mode)
-    setIllustrationSize('70%')
+    setIllustrationSize('50%')
     if(pdfView === true && mode == true) {
       setLeftBarSize('50%')
     } else if(pdfView === true && mode == false){
-      setLeftBarSize('94.5%') 
+      setLeftBarSize('100%') 
     } else if(pdfView === false && mode == true ) { 
       setLeftBarSize('0%') 
     }
@@ -138,76 +142,80 @@ const App = () => {
       <NewHeader/>
       <Grid container >
         <Grid container >
-          <SplitPane
+            <Assets 
+              handleIllustration={handleIllustration}
+              apiURL={apiURL}
+            />
+            <SplitPane
               className={`splitPane`}
               split="vertical"
-              size={assetsSize} 
-              onDragFinished={(size) => resizePane('split1', size, setAssetsSize)}
+              size={illustrationSize} 
+              onDragStarted={() => {
+                setIsDrag(true);
+              }}
+              onDragFinished={size => {
+                setIsDrag(false);
+              }}
+              pane2Style={{
+                pointerEvents: isDrag ? 'none' : 'auto',
+              }}
             
             >
-              <Assets 
-                handleIllustration={handleIllustration}
-                apiURL={apiURL}
-              />
+              <div className={'forceStrech'} ref={targetRef}>
+                {
+                  data != null && (
+                    <PatentrackDiagram 
+                      data={data} 
+                      connectionBox={handleConnectionBox} 
+                      comment={handleComment} 
+                      share={handleShare} 
+                      pdfView={handlePdfView} 
+                      uspto={handleUSPTO}
+                      titleTop={topPosition} 
+                      toolbarBottom={bottomToolbarPosition} 
+                      parentWidth={parseInt(parent_width)} 
+                      key={"PatentDiagram_" + "_" + Math.random() }
+                      gap={gap}
+                      showThirdParties={showThirdParties}
+                      pdfFile={pdfFile}
+                      toggleShow3rdParities={toggleShow3rdParities}
+                      usptoMode={usptoMode}
+                    /> 
+                  )
+                }
+              </div>            
               <SplitPane
-                className={`splitPane`}
-                split="vertical"
-                size={illustrationSize} 
+                className={`splitPane pan3`}
+                split={`horizontal`}
+                size={leftBarSize}
                 onDragStarted={() => {
-                  setIsDrag(true);
+                  setIsDragRight(true);
                 }}
                 onDragFinished={size => {
-                  setIsDrag(false);
+                  setIsDragRight(false);
                 }}
                 pane2Style={{
-                  pointerEvents: isDrag ? 'none' : 'auto',
+                  pointerEvents: isDragRight ? 'none' : 'auto',
                 }}
-              
+                pane1Style={{
+                  pointerEvents: isDragRight ? 'none' : 'auto',
+                }}
               >
-                <div className={'forceStrech'} ref={targetRef}>
-                  {
-                    data != null && (
-                      <PatentrackDiagram 
-                        data={data} 
-                        connectionBox={handleConnectionBox} 
-                        comment={handleComment} 
-                        share={handleShare} 
-                        pdfView={handlePdfView} 
-                        uspto={handleUSPTO}
-                        titleTop={topPosition} 
-                        toolbarBottom={bottomToolbarPosition} 
-                        parentWidth={parseInt(parent_width)} 
-                        key={"PatentDiagram_" + "_" + Math.random() }
-                        gap={gap}
-                        showThirdParties={showThirdParties}
-                        pdfFile={pdfFile}
-                        toggleShow3rdParities={toggleShow3rdParities}
-                        usptoMode={usptoMode}
-                      /> 
-                    )
-                  }
-                </div>            
-                <SplitPane
-                  className={`splitPane pan3`}
-                  split={`horizontal`}
-                  size={leftBarSize}
-                >
-                  {
-                    pdfView === true 
-                    ?
-                      <PdfViewer c={leftBarSize} pdfTab={pdfTab} pdfFile={pdfFile} display={true} setPdfTabIndex={setPdfTabIndex}/>
-                    :
-                    <div></div>
-                  }
-                  {
-                    usptoMode === true  
-                    ?
-                      <USPTOContainer asset={asset}  apiURL={apiURL}/>
-                    :
-                    <div></div>
-                  }              
-                </SplitPane>
-            </SplitPane>
+                {
+                  pdfView === true 
+                  ?
+                    <PdfViewer c={leftBarSize} pdfTab={pdfTab} pdfFile={pdfFile} display={true} setPdfTabIndex={setPdfTabIndex} usptoMode={usptoMode}/>
+                  :
+                  <div></div>
+                } 
+                {
+                  usptoMode === true  
+                  ?
+                    <USPTOContainer asset={asset}  apiURL={apiURL}/>
+                  :
+                  <div></div>
+                }              
+              </SplitPane>
           </SplitPane>
         </Grid>
       </Grid>

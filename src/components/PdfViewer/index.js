@@ -11,7 +11,7 @@ import FullscreenIcon from '@material-ui/icons/Fullscreen'
 
 function PdfViewer(props) {
   const viewerRef = useRef();
-  const { pdfTab, setPdfTabIndex } = props
+  const { pdfTab, setPdfTabIndex, usptoMode } = props
   const classes = useStyles()
   const [ mainPdf, setMainPdf ] = useState('about:blank')
   const [ formPdf, setFormPdf ] = useState('about:blank')
@@ -66,22 +66,12 @@ function PdfViewer(props) {
 
   
   return (
-    <div style={{height: '100%', width: '100%'}}>
-      <div
+    <div style={{height: usptoMode === false ? 'calc(100% - 50px)' : '100%', width: '100%'}}>
+      <div 
             className={classes.pdfContainer}
           >
             <div className={`${classes.pdfWrapper} ${fullView}`} id={'pdfViewer'} ref={viewerRef}>
-              {
-                props.display === "true" && <IconButton onClick={closeViewer} size="small" className={classes.close}>
-                  <Close />
-                </IconButton>
-              }
-              {
-                props.display === "false" && <IconButton size="small" className={classes.fullscreenBtn} onClick={handleClickOpenFullscreen}>
-                <FullscreenIcon />
-                </IconButton>
-              }
-              
+                            
               <div className={classes.container}>
                 {
                   (pdfTab === 2 || pdfTab === 3) && mainPdf != 'about:blank'
