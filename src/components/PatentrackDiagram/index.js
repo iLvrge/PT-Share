@@ -1681,7 +1681,7 @@ class PatentrackDiagram extends React.Component {
             <g id="patentLinksGroup">{links}</g>
             <g id="patentNodesGroup">{nodes}</g>
             <g transform={`translate(16,${svgParams.height ? svgParams.height - 10 : this.height })`}>
-              <text fill="#BDBDBD">This illustration is copy right protected, and covered by several pending patent application.</text>
+              <text fill="#BDBDBD"><tspan>The illustrations, and the systems and methods by which they were created, are copyright protected and covered by several</tspan> <tspan x="0" dy="14.25">pending patent applications.</tspan></text>
             </g>
           </svg>
         </div>

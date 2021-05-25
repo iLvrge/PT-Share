@@ -156,10 +156,13 @@ const App = () => {
               onDragFinished={size => {
                 setIsDrag(false);
               }}
+              pane1Style={{
+                pointerEvents: isDrag ? 'none' : 'auto',
+              }}
               pane2Style={{
                 pointerEvents: isDrag ? 'none' : 'auto',
               }}
-            
+              
             >
               <div className={'forceStrech'} ref={targetRef}>
                 {
@@ -194,11 +197,11 @@ const App = () => {
                 onDragFinished={size => {
                   setIsDragRight(false);
                 }}
-                pane2Style={{
-                  pointerEvents: isDragRight ? 'none' : 'auto',
-                }}
                 pane1Style={{
-                  pointerEvents: isDragRight ? 'none' : 'auto',
+                  pointerEvents: isDragRight || isDrag ? 'none' : 'auto',
+                }}
+                pane2Style={{
+                  pointerEvents: isDragRight || isDrag ? 'none' : 'auto',
                 }}
               >
                 {
