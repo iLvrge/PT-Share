@@ -1,23 +1,220 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect, useState, useCallback, useRef} from 'react'
+import { useLocation } from "react-router-dom"
+import SplitPane from 'react-split-pane'
 
-function App() {
+
+import { Grid } from '@material-ui/core'
+
+import Assets from './components/Assets'
+
+import PatentrackDiagram from './components/PatentrackDiagram'
+import PdfViewer from './components/PdfViewer'
+import USPTOContainer from './components/USPTOContainer'
+import NewHeader from './components/NewHeader'
+
+import './App.css'
+
+function useDimensions() {
+  return {width: window.innerWidth, height: window.innerHeight}
+}
+
+const App = () => {
+  const targetRef = useRef()
+  const [data, setData] = useState(null)	
+  const [pdfView, setPDFView] = useState(false)
+  const [pdfFile, setPDFFile] = useState({document: '', form: '', agreement: ''})
+  const [pdfTab, setPdfTabIndex] = useState(2)
+  const [ topPosition, setTopPosition ] = useState(0) 
+  const [ parent_width, setParentWidth ] = useState(0)
+  const [ bottomToolbarPosition, setBottomToolbarPosition ] = useState(0)
+  const [size, setSize] = useState(useDimensions)
+  const [assetsSize, setAssetsSize] = useState('10%')
+  const [illustrationSize, setIllustrationSize] = useState('100%')
+  const [leftBarSize, setLeftBarSize] = useState('100%')
+  const [ gap, setGap ] = useState( { x: '14.1rem', y: '7.5rem'} )
+  const [ showThirdParties, setShowThirdParties ] = useState(true)
+  const [ usptoMode, setUsptoMode ] = useState(false)
+  const [ asset, setAsset ] = useState(null)	
+  const [isDrag, setIsDrag] = useState(false);
+  const apiURL = 'http://localhost:3600/'
+
+
+  useEffect(() => {
+    if (targetRef.current) {    
+      const screenHeight = window.screen.availHeight  
+      const patentelement = targetRef.current.parentElement
+      setBottomToolbarPosition(screenHeight - patentelement.offsetHeight - 170)
+      const clientRect = patentelement.getBoundingClientRect()
+      setTopPosition(clientRect.top)
+      setParentWidth(parseInt(targetRef.current.offsetWidth))
+    }
+  }, [ targetRef])
+    
+
+  const resizePane = (name, size) => {
+		localStorage.setItem(name, size)
+  }
+  
+  const handleIllustration = useCallback(async (asset, shareCode) => {
+    const request = new Request(`${apiURL}share/${asset}${shareCode}`);
+			fetch(request)
+			.then(response => {
+				if (response.status === 200) {
+					(async () => {
+						const dashData = await response.json();
+						setData(dashData);
+					})();
+				} else {
+					throw new Error('Something went wrong on api server!');
+				}
+			})
+  }, [ apiURL ])
+
+  const handleConnectionBox = () => {
+
+  }
+
+  const handleComment = () => {
+    
+  }
+
+  const handleShare = () => {
+    
+  }
+
+  const handlePdfView = (obj) => {		
+    if(pdfView === false) {
+      if(typeof obj.document_file != 'undefined') {
+        setIllustrationSize('70%')
+        setPDFFile({ document: obj.document_file, form: obj.document_form, agreement: obj.document_agreement }) 
+        setPDFView(true)
+        setPdfTabIndex(2) 
+        if( usptoMode === true ) {
+          setLeftBarSize('50%')
+        } else {
+          setLeftBarSize('94.5%')
+        }
+        
+        //setConnectionBoxView(false)
+      } else {
+        //alert('No document found!')
+      }	
+    } else {
+      setPDFFile({ document: '', form: '', agreement: '' }) 
+      setPDFView( false )
+      if(usptoMode === false) {
+        setIllustrationSize('100%')
+      } else {
+        setLeftBarSize('0%')
+      }
+    }
+    
+	}
+
+  const handleUSPTO = (mode, patentObj) => {    
+    setUsptoMode(mode)
+    setIllustrationSize('70%')
+    if(pdfView === true && mode == true) {
+      setLeftBarSize('50%')
+    } else if(pdfView === true && mode == false){
+      setLeftBarSize('94.5%') 
+    } else if(pdfView === false && mode == true ) { 
+      setLeftBarSize('0%') 
+    }
+    if(mode === false) {
+      setAsset(null)
+      if(pdfView === false) {
+        setIllustrationSize('100%')
+      }
+    } else {
+      setAsset(patentObj.original_number)
+    }  
+    
+    
+  }
+
+  const toggleShow3rdParities = () => {
+    setShowThirdParties(!showThirdParties)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={'root'}>
+      <NewHeader/>
+      <Grid container >
+        <Grid container >
+          <SplitPane
+              className={`splitPane`}
+              split="vertical"
+              size={assetsSize} 
+              onDragFinished={(size) => resizePane('split1', size, setAssetsSize)}
+            
+            >
+              <Assets 
+                handleIllustration={handleIllustration}
+                apiURL={apiURL}
+              />
+              <SplitPane
+                className={`splitPane`}
+                split="vertical"
+                size={illustrationSize} 
+                onDragStarted={() => {
+                  setIsDrag(true);
+                }}
+                onDragFinished={size => {
+                  setIsDrag(false);
+                }}
+                pane2Style={{
+                  pointerEvents: isDrag ? 'none' : 'auto',
+                }}
+              
+              >
+                <div className={'forceStrech'} ref={targetRef}>
+                  {
+                    data != null && (
+                      <PatentrackDiagram 
+                        data={data} 
+                        connectionBox={handleConnectionBox} 
+                        comment={handleComment} 
+                        share={handleShare} 
+                        pdfView={handlePdfView} 
+                        uspto={handleUSPTO}
+                        titleTop={topPosition} 
+                        toolbarBottom={bottomToolbarPosition} 
+                        parentWidth={parseInt(parent_width)} 
+                        key={"PatentDiagram_" + "_" + Math.random() }
+                        gap={gap}
+                        showThirdParties={showThirdParties}
+                        pdfFile={pdfFile}
+                        toggleShow3rdParities={toggleShow3rdParities}
+                        usptoMode={usptoMode}
+                      /> 
+                    )
+                  }
+                </div>            
+                <SplitPane
+                  className={`splitPane pan3`}
+                  split={`horizontal`}
+                  size={leftBarSize}
+                >
+                  {
+                    pdfView === true 
+                    ?
+                      <PdfViewer c={leftBarSize} pdfTab={pdfTab} pdfFile={pdfFile} display={true} setPdfTabIndex={setPdfTabIndex}/>
+                    :
+                    <div></div>
+                  }
+                  {
+                    usptoMode === true  
+                    ?
+                      <USPTOContainer asset={asset}  apiURL={apiURL}/>
+                    :
+                    <div></div>
+                  }              
+                </SplitPane>
+            </SplitPane>
+          </SplitPane>
+        </Grid>
+      </Grid>
     </div>
   );
 }

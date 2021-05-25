@@ -1,10 +1,63 @@
+html, body {
+  height: 100%;
+}
+
+body {
+  color: #fff;
+  margin: 0;
+  font-size: 0.875rem;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+  font-weight: 400;
+  line-height: 1.43;
+  letter-spacing: 0.01071em;
+  scroll-behavior: smooth;
+  background-color: #121212 !important;
+  min-width: 800px;
+  overflow: hidden;
+}
 .App {
   text-align: center;
+  background: #121212 !important;
+  height: 100vh;
+  color: #fff
+}
+
+.root {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-wrap: nowrap !important;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  padding: 5px;
+},
+.dashboard {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid #363636 ;
+}
+.dashboardWarapper {
+  position: relative;
+  flex-grow: 1;
+  flex-direction: column;
+  display: flex;
+  height: auto;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  z-index: 1;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+.pan3 .Pane1{
+  display: block
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -26,6 +79,50 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.splitPane { 
+  position: relative !important
+}
+.splitPane .Resizer {
+  opacity: 1;
+  height: 100%;
+  width: 3px;
+  z-index: 1;
+  box-sizing: border-box;
+  cursor: col-resize;
+  background-clip: padding-box;
+  background:#000;
+}
+.splitPane .Resizer:hover{
+  background: #f50057
+}
+.splitPane .Resizer.horizontal {
+  height: 3px;
+  width: 100%;
+  cursor: row-resize;
+}
+.Pane {
+  max-height: 100%
+}
+.Pane2{
+  height: 100%;
+  overflow: auto
+}
+
+.forceStrech {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.active, .MuiTableRow-root.Mui-selected .MuiTableCell-root{
+  color: #f50057
 }
 
 @keyframes App-logo-spin {
