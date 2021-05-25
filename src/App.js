@@ -36,7 +36,7 @@ const App = () => {
   const [ usptoMode, setUsptoMode ] = useState(false)
   const [ asset, setAsset ] = useState(null)	
   const [isDrag, setIsDrag] = useState(false);
-  const apiURL = 'http://localhost:3600/'
+  const apiURL = 'https://betapp.patentrack.com'
 
 
   useEffect(() => {
