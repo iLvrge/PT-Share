@@ -1,3 +1,7 @@
+html{
+  font-size: 14px;
+}
+
 html, body {
   height: 100%;
 }
@@ -131,5 +135,28 @@ body {
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+
+@media (80em <= width <= 95em) {
+  html {
+    font-size: 0.85rem;
+  }
+}
+@media (60em <= width <= 80em) {
+  html {
+    font-size: 0.7rem;
+  }
+}
+@media (40em <= width <= 60em) {
+  html {
+    font-size: 0.5rem;
+  }
+}
+
+@media (max-width: 40em) {
+  html {
+    font-size: 0.4rem;
   }
 }

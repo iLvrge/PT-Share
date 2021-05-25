@@ -142,7 +142,7 @@ export default function PatentNode(props) {
           .append("div")	
           .attr("class", "tooltip_title")	
           .html(data.name)
-          .style("left", (getBoundElementRec.left - 46) + "px")		
+          .style("left", (getBoundElementRec.left - 65) + "px")		
           .style("top", (getBoundElementRec.top - 41) + "px");	
       })
       .on("mouseout", () => {
