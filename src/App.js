@@ -46,7 +46,7 @@ const App = () => {
       setBottomToolbarPosition(screenHeight - patentelement.offsetHeight - 170)
       const clientRect = patentelement.getBoundingClientRect()
       setTopPosition(clientRect.top)
-      setParentWidth(parseInt(targetRef.current.offsetWidth))
+      setParentWidth(parseInt(targetRef.current.offsetWidth))  
     }
   }, [ targetRef])
     
@@ -94,11 +94,7 @@ const App = () => {
         } else {
           setLeftBarSize('94.5%')
         }
-        
-        //setConnectionBoxView(false)
-      } else {
-        //alert('No document found!')
-      }	
+      } 
     } else {
       setPDFFile({ document: '', form: '', agreement: '' }) 
       setPDFView( false )
