@@ -53,14 +53,15 @@ export default makeStyles(theme => ({
     '& .MuiTab-root':{
       minWidth: '90px'
     },
-    minHeight: 0,
+    minHeight: 32,
     display: 'flex',
     '& .MuiTab-root': {
-      fontSize: '1rem'
+      fontSize: '1rem',
+      minHeight: 32,
     }
   },
   tab: {
-    minHeight: 38,
+    minHeight: 32, 
   },
   fullscreenBtn: {
     position: 'absolute',
