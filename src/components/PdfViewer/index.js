@@ -30,6 +30,14 @@ function PdfViewer(props) {
     }    
   } 
 
+  useEffect(() => {
+    const parentElement = viewerRef.current
+    if( parentElement != null ) {
+      const height =  window.innerHeight
+      parentElement.querySelector('div').style.height = height - 43 + 'px' 
+    }
+  }, [viewerRef])
+
   useEffect(()=> {
     if(props.pdfView == 'true') {
       setFullView(classes.fullView) 
@@ -39,10 +47,9 @@ function PdfViewer(props) {
       setFormPdf(props.pdfFile.document != '' ? props.pdfFile.form+'#zoom=FitH' : 'about:blank')
       setAgreementPdf(props.pdfFile.document != '' ? props.pdfFile.agreement+'#zoom=FitH' : 'about:blank')      
     }
-  },[ classes.fullView, props.pdfFile, props.pdfView ]) 
+  },[ classes.fullView, props.pdfFile, props.pdfView ])    
 
   useEffect(() => {
-    console.log("props", props)
     if(props.resize === true) {
       checkHeight(pdfTab)
     }
@@ -63,7 +70,6 @@ function PdfViewer(props) {
     props.setPDFViewModal(true)
 
   }
- 
   
   return (
     <div style={{height: usptoMode === false ? 'calc(100vh - 43px)' : '100%', width: '100%'}}>

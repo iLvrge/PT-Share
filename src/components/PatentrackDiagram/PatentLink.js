@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import moment from "moment";
 import * as d3 from "d3";
+import { Divider } from "@material-ui/core";
 
 function getStraightMedianPoints(propData) {
   let out = [];
@@ -325,7 +326,7 @@ export default function PatentLink(props) {
           .getBBox();
         d3.selectAll("#dummy").remove();
 
-        d3.select("#" + svg)
+        /* d3.select("#" + svg)
           .append("rect")
           .attr("x", dx)
           .attr("y", dy)
@@ -341,7 +342,7 @@ export default function PatentLink(props) {
           ])
           .attr("opacity", config.node.opacity);
 
-        d3.select("#" + svg)
+        d3.select("#" + svg) 
           .append("text")
           .attr("x", dx + 70 )
           .attr("y", dy )
@@ -349,15 +350,27 @@ export default function PatentLink(props) {
           .attr("fill", config.node.fontColor)
           .attr("font-size", config.link.tooltip.fontSize)
           .attr("text-anchor", "middle")
-          .attr("alignment-baseline", "middle")
-          /* .text(data.category); */
+          .attr("alignment-baseline", "middle")          
           .html("<tspan dx='0rem' dy='1.1rem'>"+ data.category + "</tspan><tspan dx='-2.9rem' dy='1.5rem'>Execution: " +
                   time2String(data.line.date) +
                   '</tspan><tspan dx="-8.2rem" dy="1.1rem">' +
                   "Recorded: " +
                   time2String(data.line.recorded) +
                   "</tspan>",
-          );
+          ); */  
+          const bodyElement = document.querySelector('body')
+          const tooltipElement = document.createElement('div')
+          tooltipElement.classList.add('link-tooltip')
+          tooltipElement.style = `position:absolute;top:${dy + 55}px;left:${dx + 130}px;border:1px solid ${config.colors[
+            data.category.charAt(0).toLowerCase() +
+              data.category.slice(1).replace(" ", "")
+          ]};font-size:${config.link.tooltip.fontSize};background:${config.node.background};color:${config.colors[
+            data.category.charAt(0).toLowerCase() +
+              data.category.slice(1).replace(" ", "")
+          ]};padding:5px`
+          tooltipElement.innerHTML = `<div>${data.category}</div><div>Execution: ${time2String(data.line.date)}</div><div>Recorded: ${time2String(data.line.recorded)}</div>`
+          console.log('tooltipElement', tooltipElement)
+          bodyElement.appendChild(tooltipElement) 
       })
       .on("mouseout", () => {
         d3.selectAll(".link-tooltip").remove();

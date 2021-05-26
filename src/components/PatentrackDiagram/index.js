@@ -1661,7 +1661,7 @@ class PatentrackDiagram extends React.Component {
           titleTop={this.props.titleTop}
           title={this.parseTitle()}
         />
-        <div style={{ overflow: "auto", marginTop: "-2rem", minHeight: "89%" }}>
+        <div style={{ overflow: "auto", marginTop: "-2rem", minHeight: "88.4%" }}>
           <svg
             className="diagram-container"
             id={"svg_" + this.prefix}

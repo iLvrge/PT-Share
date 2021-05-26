@@ -18,7 +18,7 @@ label span{ padding: 0px 4px 0px 8px; position: relative; vertical-align: middle
     vertical-align: middle; 
     justify-content: flex-start; 
     align-items: center; 
-    width: 98%;
+    width: 100%;
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
      -khtml-user-select: none; /* Konqueror HTML */
