@@ -66,9 +66,9 @@ function PdfViewer(props) {
 
   
   return (
-    <div style={{height: usptoMode === false ? 'calc(100% - 50px)' : '100%', width: '100%'}}>
+    <div style={{height: usptoMode === false ? 'calc(100% - 60px)' : '100%', width: '100%'}}>
       <div 
-            className={classes.pdfContainer}
+          className={classes.pdfContainer}
           >
             <div className={`${classes.pdfWrapper} ${fullView}`} id={'pdfViewer'} ref={viewerRef}>
                             

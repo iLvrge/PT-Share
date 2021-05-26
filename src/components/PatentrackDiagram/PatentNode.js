@@ -68,6 +68,8 @@ export default function PatentNode(props) {
   useEffect(() => {
     let dx = node.leftOffset + data.x * node.gap.x;
     let dy = node.topOffset + data.y * node.gap.y;
+    /* console.log('dx',data.typeID.type, node.leftOffset, data.x, node.gap.x)
+    console.log('dy',data.typeID.type, node.topOffset, data.y, node.gap.y) */
     let offsetX = "0.6rem";
     let datesOffsetX = "2.2rem";
 
@@ -80,7 +82,7 @@ export default function PatentNode(props) {
         childrenLinks.map(link_ => link_.props.data.category.replace(" ", "")),
       ),
     );
-
+       
     let g = d3
       .select("#" + parent)
       .append("g")

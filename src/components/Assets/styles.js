@@ -8,7 +8,7 @@ export default makeStyles(theme => ({
         overflow: 'auto',
         marginRight: 3,
         background: '#424242',
-        '& .MuiTableCell-root':{
+        '& .MuiTableCell-root, .MuiTableSortLabel-root:focus, .MuiTableSortLabel-root:hover':{
             whiteSpace: 'nowrap',
             color: '#fff'
         },

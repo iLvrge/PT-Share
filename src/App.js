@@ -50,6 +50,14 @@ const App = () => {
       setParentWidth(parseInt(targetRef.current.offsetWidth))  
     }
   }, [ targetRef])
+
+  useEffect(() => {
+    if( usptoMode === true && pdfView === true ) {
+      document.getElementsByClassName('pan3')[0].querySelector('.Resizer').style.display = ''
+    } else {
+      document.getElementsByClassName('pan3')[0].querySelector('.Resizer').style.display = 'none'
+    }
+  }, [ usptoMode, pdfView ])
     
 
   const resizePane = (name, size) => {
@@ -57,12 +65,17 @@ const App = () => {
   }
   
   const handleIllustration = useCallback(async (asset, shareCode) => {
-    if(pdfView === true && usptoMode == false) {
-      setIllustrationSize('100%')
-    } else if(usptoMode == true){
-      setAsset(asset)
-    }
     setPDFView(false)
+    setPDFFile({ document: '', form: '', agreement: '' }) 
+    setUsptoMode( prev => {
+      if(prev === false) {
+        setIllustrationSize('100%')
+      } else {
+        setLeftBarSize('0%') 
+        setAsset(asset)
+      }
+      return prev
+    })     
     const request = new Request(`${apiURL}share/${asset}${shareCode}`);
 			fetch(request)
 			.then(response => {
