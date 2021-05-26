@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 export default makeStyles(theme => ({
     drive: {
         display: 'flex', 
-        height: 'calc(100vh - 42px)',
+        height: '100vh',
         width: '110px',
         overflow: 'auto',
         marginRight: 3,
@@ -17,7 +17,7 @@ export default makeStyles(theme => ({
             height: theme.spacing(2),
         }, 
         '& .MuiList-root':{
-            width: '100%',
+            width: '100%', 
         },
         '& .MuiTreeItem-label':{
             height: 40,
