@@ -8,9 +8,10 @@ export default makeStyles(theme => ({
         overflow: 'auto',
         marginRight: 3,
         background: '#424242',
-        '& .MuiTableCell-root, .MuiTableSortLabel-root:focus, .MuiTableSortLabel-root:hover':{
+        '& .MuiTableCell-root, .MuiTableSortLabel-root:focus, .MuiTableSortLabel-root:hover, .MuiTableSortLabel-root.MuiTableSortLabel-active, .MuiTableSortLabel-root.MuiTableSortLabel-active.MuiTableSortLabel-root.MuiTableSortLabel-active .MuiTableSortLabel-icon, .MuiSvgIcon-root':{
             whiteSpace: 'nowrap',
-            color: '#fff'
+            color: '#fff !important',
+            fill: '#fff !important'
         }, 
         '& .MuiAvatar-root':{
             width: theme.spacing(2),

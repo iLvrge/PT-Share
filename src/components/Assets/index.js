@@ -79,7 +79,7 @@ const Assets = ({handleIllustration, apiURL}) => {
                         rowSelected={selectRow}
                         rows={assetsList}
                         rowHeight={rowHeight}
-                        headerHeight={rowHeight}
+                        headerHeight={57}
                         columns={COLUMNS}
                         onSelect={handleClick}
                         defaultSelectAll={selectedAll}

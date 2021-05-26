@@ -28,6 +28,7 @@ export default makeStyles(theme => ({
     position: 'absolute',
     width: '100%',
     height: '100%',
+    border: 0
   },
   loader: {
     position: 'absolute',

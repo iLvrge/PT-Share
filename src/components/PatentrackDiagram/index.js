@@ -1661,7 +1661,7 @@ class PatentrackDiagram extends React.Component {
           titleTop={this.props.titleTop}
           title={this.parseTitle()}
         />
-        <div style={{ overflow: "auto", marginTop: "-2rem", minHeight: "90.5%" }}>
+        <div style={{ overflow: "auto", marginTop: "-2rem", minHeight: "89%" }}>
           <svg
             className="diagram-container"
             id={"svg_" + this.prefix}
@@ -1670,7 +1670,7 @@ class PatentrackDiagram extends React.Component {
             mlndes="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
           >
-            <g id="parentTimelineGrid">
+            <g id="parentTimelineGrid"> 
               <PatentTimeline
                 parent="parentTimelineGrid" 
                 params={params}
