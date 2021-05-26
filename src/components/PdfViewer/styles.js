@@ -49,7 +49,7 @@ export default makeStyles(theme => ({
     cursor: 'pointer',
   }, 
   tabs: {
-    backgroundColor: 'rgb(50, 54, 57)',
+    backgroundColor: '#292929',
     '& .MuiTab-root':{
       minWidth: '90px'
     },

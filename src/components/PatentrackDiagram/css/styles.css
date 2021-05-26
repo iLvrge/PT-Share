@@ -11,8 +11,8 @@ label span{ padding: 0px 4px 0px 8px; position: relative; vertical-align: middle
     padding: 20px 4px 17px 16px;
     font-size: 1.0rem;
     color: #FFFFFF;
-    background-color: #323639;
-    box-shadow: 0 0px 5px 3px #272b2d;
+    background-color: #292929;
+    /* box-shadow: 0 0px 5px 3px #272b2d; */
     opacity: 0.85;
     text-align: left; 
     vertical-align: middle; 
@@ -53,7 +53,7 @@ label span{ padding: 0px 4px 0px 8px; position: relative; vertical-align: middle
 
 #bottomUIToolbarContainer {
     width: 100%;
-    height: 32px;
+    height: 36px;
     position: sticky;
     bottom: 0;
 }
@@ -62,10 +62,10 @@ label span{ padding: 0px 4px 0px 8px; position: relative; vertical-align: middle
     display: flex;
     /* justify-content: space-between; */
     width: 100%;
-    height: 32px;
+    height: 36px;
     grid-template-columns: repeat(18, max-content) repeat(3, 1fr) repeat(3, max-content);
     grid-row-gap: 0px;
-    background-color: #323639;
+    background-color: #292929;
     /* box-shadow: 0 0px 5px 0 #272B2D; */
     font-size: 12px;
     color: #FFFFFF;
