@@ -53,7 +53,7 @@ const App = () => {
 
   useEffect(() => {
     if( usptoMode === true && pdfView === true ) {
-      document.getElementsByClassName('pan3')[0].querySelector('.Resizer').style.display = ''
+      document.getElementsByClassName('pan3')[0].querySelector('.Resizer').style.display = 'block'
     } else {
       document.getElementsByClassName('pan3')[0].querySelector('.Resizer').style.display = 'none'
     }
@@ -62,7 +62,7 @@ const App = () => {
 
   const resizePane = (name, size) => {
 		localStorage.setItem(name, size)
-  }
+  } 
   
   const handleIllustration = useCallback(async (asset, shareCode) => {
     setPDFView(false)

@@ -129,6 +129,10 @@ body {
   color: #f50057
 }
 
+.pan3 .Pane1 {
+  background: rgb(50, 54, 57);
+}
+
 .pan3 .Resizer.horizontal{
   display: none;
 }

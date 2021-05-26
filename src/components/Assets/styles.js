@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 export default makeStyles(theme => ({
     drive: {
         display: 'flex', 
-        height: '100vh',
+        height: 'calc(100vh - 42px)',
         width: '110px',
         overflow: 'auto',
         marginRight: 3,
@@ -11,7 +11,7 @@ export default makeStyles(theme => ({
         '& .MuiTableCell-root, .MuiTableSortLabel-root:focus, .MuiTableSortLabel-root:hover':{
             whiteSpace: 'nowrap',
             color: '#fff'
-        },
+        }, 
         '& .MuiAvatar-root':{
             width: theme.spacing(2),
             height: theme.spacing(2),

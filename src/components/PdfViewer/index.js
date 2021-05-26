@@ -63,10 +63,10 @@ function PdfViewer(props) {
     props.setPDFViewModal(true)
 
   }
-
+ 
   
   return (
-    <div style={{height: usptoMode === false ? 'calc(100% - 60px)' : '100%', width: '100%'}}>
+    <div style={{height: usptoMode === false ? 'calc(100vh - 55px)' : '100%', width: '100%'}}>
       <div 
           className={classes.pdfContainer}
           >

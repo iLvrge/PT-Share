@@ -197,7 +197,7 @@ label span{ padding: 0px 4px 0px 8px; position: relative; vertical-align: middle
 .wrapText tspan:nth-child(3){ 
     display: none;
 }
-div.tooltip_title {
+div.tooltip_title { 
     position: absolute;			
     text-align: left;			
     /* margin: 0 auto; */
@@ -208,7 +208,7 @@ div.tooltip_title {
     background: #121212;
     pointer-events: none;
     font-weight: 500; 
-    font-size: 12.25px;
+    font-size: 0.75rem;
     white-space: nowrap;
 }
 /*

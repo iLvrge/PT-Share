@@ -129,6 +129,7 @@ export default function PatentNode(props) {
       .attr('title', data.name)
       .on("mouseover", () => {
         let dx = d3.event.offsetX, dy = d3.event.offsetY
+        console.log("d3.event", d3.event)
         let fromElement = d3.event.fromElement
         if( fromElement != null && fromElement.nodeName != 'rect') {
           const path =  d3.event.path
@@ -140,17 +141,16 @@ export default function PatentNode(props) {
           }
         }
         if( fromElement != null ) {
-          console.log('fromElement.nodeName', fromElement.nodeName)
           const getBoundElementRec = fromElement.getBoundingClientRect()
           d3.select("#patentrackDiagramDiv")
             .append("div")	
             .attr("class", "tooltip_title")	
             .html(data.name)
-            .style("left", (getBoundElementRec.left + 17) + "px")		
+            .style("left", (getBoundElementRec.left) + "px")		
             .style("top", (getBoundElementRec.top - 41) + "px");	
         }        
       })
-      .on("mouseout", () => {
+      .on("mouseout", () => { 
         d3.selectAll(".tooltip_title").remove(); 
       })
       .text(data.name) 
