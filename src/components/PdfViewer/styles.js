@@ -53,7 +53,7 @@ export default makeStyles(theme => ({
     '& .MuiTab-root':{
       minWidth: '90px'
     },
-    minHeight: '32px !important',
+    minHeight: '36px !important',
     display: 'flex',
     '& .MuiTab-root': {
       fontSize: '1rem',

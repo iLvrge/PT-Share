@@ -126,7 +126,7 @@ body {
 }
 
 .active, .MuiTableRow-root.Mui-selected .MuiTableCell-root{
-  color: #f50057
+  color: #f50057 !important
 }
 
 .pan3 .Pane1 {
