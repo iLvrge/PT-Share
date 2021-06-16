@@ -1,0 +1,169 @@
+import React, { useState, useEffect } from 'react'
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
+import IconButton from '@material-ui/core/IconButton'
+import Paper from '@material-ui/core/Paper'
+import Typography from '@material-ui/core/Typography'
+import { Add, Remove } from '@material-ui/icons'
+import useStyles from './styles'
+
+
+function ConnectionBox(props) {
+  const classes = useStyles()
+  const [ boxData, setBoxData ] = useState({})
+  const [ assetData, setAssetData ] = useState({})
+  const [ visibility, setVisibility] = useState(false)
+
+  useEffect(() => {
+    if(props.assets){
+        const request = new Request(`${props.url}connection/${props.assets.popuptop}`);
+        fetch(request)
+        .then(response => {
+          if (response.status === 200) {
+            (async () => {
+              const data = await response.json();
+              const oldAssetsData = props.assets
+              oldAssetsData.popup = data.popup
+              setAssetData(oldAssetsData)
+              setBoxData(data)
+            })();
+          } else {
+            throw new Error('Something went wrong on api server!');
+          }
+        })
+    }
+  },[ props.assets ])
+
+  const ShowText = ({ classes, data }) => {
+    return (
+      <Typography variant="body2" className={classes}>      
+        {data}
+      </Typography>
+    )
+  }
+
+  const RetreieveBoxData = (props) => {
+    const info = assetData.popup && assetData.popup.filter(p => {
+      return p.id == props.popup.id
+    })
+    const index = assetData.popup && assetData.popup.findIndex(x => x.id === props.popup.id)
+    return(
+      <div key={props.keyIndex} className={classes.rootContainer}>
+      {
+        info && info != null && info.length > 0 && Object.keys(info[0]).length > 0 
+        ?
+        <>
+          <Table className={classes.table}>
+            <TableBody>
+              <TableRow>
+                <TableCell><ShowText data={info[0].conveyanceText}/></TableCell>
+              </TableRow>
+              </TableBody>
+          </Table>  
+          <Table className={classes.table}>
+            <TableBody>
+              <TableRow>
+                <TableCell className={classes.fixedWidth}>
+                  <ShowText classes={classes.red} data={`Execution Date`}/>
+                  <ShowText data={info[0].patAssignorEarliestExDate}/>
+                </TableCell>
+                <TableCell>
+                  <ShowText classes={classes.red} data={`Reel/frame`}/>
+                  <ShowText data={info[0].displayId}/>
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>
+                  <ShowText classes={classes.red} data={`Assignors`}/>
+                  {
+                    info[0].patAssignorName.map( (assignor, index) =>(
+                      <ShowText key={`assignor-${index}`} data={assignor}/>
+                    ))
+                  }
+                </TableCell>
+                <TableCell>
+                  <ShowText classes={classes.red} data={`Assignee`}/>
+                  {
+                    info[0].patAssigneeName.map( (assignor, index) =>(
+                      <ShowText key={`assignee-${index}`} data={assignor}/>
+                    ))
+                  }
+                  <ShowText data={info[0].patAssigneeAddress1[index]}/>
+                  <ShowText data={info[0].patAssigneeCity[index]}/>
+                  <ShowText data={info[0].patAssigneeState[index]}/>
+                  <ShowText data={info[0].patAssigneePostcode[index]}/>
+                </TableCell>
+                <TableCell>
+                  <ShowText classes={classes.red} data={`Correspondent`}/>
+                  <ShowText data={info[0].corrName}/>
+                  <ShowText data={info[0].corrAddress1}/>
+                  <ShowText data={info[0].corrAddress2}/>
+                  <ShowText data={info[0].corrAddress3}/>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+          <Table className={classes.table}>
+            <TableBody>
+              <TableRow>
+                <TableCell>
+                  <Typography variant="body2"> 
+                    <IconButton onClick={() => setVisibility(!visibility)}>{visibility === false ? <Add /> : <Remove />}</IconButton>  <span className={classes.red}>Properties ({info[0].inventionTitle.length})</span>
+                  </Typography>
+                </TableCell>
+              </TableRow>
+              </TableBody>
+          </Table>
+          <Table className={classes.table}>
+            <TableHead>
+              <TableRow>
+                {
+                  ['Patent', 'Publication', 'Application', 'PCT International registration'].map((col, index) => (
+                    <TableCell key={index}><ShowText data={col}/></TableCell>
+                  ))
+                }
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {
+                visibility === true && info[0].inventionTitle.map((invention, index) => {
+                  return (
+                    <>
+                      <TableRow key={`invention-${index+2}`}>
+                        <TableCell><ShowText data={info[0].patNum[index]}/></TableCell>
+                        <TableCell><ShowText data={info[0].publNum[index]}/></TableCell>
+                        <TableCell><ShowText data={info[0].applNum[index]}/></TableCell>
+                        <TableCell><ShowText data={info[0].pctNum[index]}/></TableCell>
+                      </TableRow>
+                    </>
+                  )
+                })
+              }
+            </TableBody>
+          </Table>
+        </>
+        :
+        ''
+      }
+      </div>
+    )
+  } 
+  return (
+    <Paper className={classes.root} square>
+      {/* <span className={classes.close} onClick={closeViewer}><i className={'fal fa-times-circle'}></i></span> */}
+      <div className={classes.container}>
+        {
+          Object.keys(boxData).length > 0 &&
+          boxData.popup.map(pop => <RetreieveBoxData key={pop} keyIndex={pop} popup={pop}/>)
+        }                 
+      </div>  
+    </Paper>
+  )
+}
+
+
+
+export default ConnectionBox

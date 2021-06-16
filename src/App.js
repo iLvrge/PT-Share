@@ -11,8 +11,10 @@ import PatentrackDiagram from './components/PatentrackDiagram'
 import PdfViewer from './components/PdfViewer'
 import USPTOContainer from './components/USPTOContainer'
 import NewHeader from './components/NewHeader'
+import ConnectionBox from './components/ConnectionBox'
 
 import './App.css'
+import { AirlineSeatReclineExtraOutlined } from '@material-ui/icons'
 
 function useDimensions() {
   return {width: window.innerWidth, height: window.innerHeight}
@@ -34,12 +36,17 @@ const App = () => {
   const [ gap, setGap ] = useState( { x: '14.1rem', y: '7.5rem'} )
   const [ showThirdParties, setShowThirdParties ] = useState(true)
   const [ usptoMode, setUsptoMode ] = useState(false)
+  const [ connectionMode, setConnectionMode ] = useState(false)
+  const [ connectionData, setConnectionData ] = useState(null)
+  const [ linkId, setLinkId ] = useState(null)
+  const [ click, setClick ] = useState(0)
+  const [ lineId, setLineId ] = useState(0)
   const [ asset, setAsset ] = useState(null)	
-  const [isDrag, setIsDrag] = useState(false);
-  const [isDragRight, setIsDragRight] = useState(false);
+  const [isDrag, setIsDrag] = useState(false)
+  const [isDragRight, setIsDragRight] = useState(false)
   const apiURL = 'https://betapp.patentrack.com/'
 
-
+  
   useEffect(() => {
     if (targetRef.current) {    
       const screenHeight = window.screen.availHeight  
@@ -52,12 +59,12 @@ const App = () => {
   }, [ targetRef])
 
   useEffect(() => {
-    if( usptoMode === true && pdfView === true ) {
+    if( connectionMode === true && pdfView === true ) {
       document.getElementsByClassName('pan3')[0].querySelector('.Resizer').style.display = 'block'
     } else {
       document.getElementsByClassName('pan3')[0].querySelector('.Resizer').style.display = 'none'
     }
-  }, [ usptoMode, pdfView ])
+  }, [ connectionMode, pdfView ])
     
 
   const resizePane = (name, size) => {
@@ -66,6 +73,8 @@ const App = () => {
   
   const handleIllustration = useCallback(async (asset, shareCode) => {
     setPDFView(false)
+    setClick(0)
+    setLineId(0)
     setPDFFile({ document: '', form: '', agreement: '' }) 
     setUsptoMode( prev => {
       if(prev === false) {
@@ -90,9 +99,47 @@ const App = () => {
 			})
   }, [ apiURL ])
 
-  const handleConnectionBox = () => {
-
-  }
+  const handleConnectionBox = useCallback((obj) => {
+    if (typeof obj.popup != 'undefined') {
+      console.log("connection", obj)
+      setLineId(obj.id)
+      if(linkId != obj.popuptop) {
+        setLinkId(obj.popuptop)
+        setUsptoMode(false)
+        setIllustrationSize('50%')
+        setPDFView(true)
+        setPdfTabIndex(0)
+        setPDFFile(
+          { 
+            document: obj.document1, 
+            form: obj.document1_form, 
+            agreement: obj.document1_agreement 
+          }
+        )
+        setLeftBarSize('50%')
+        setConnectionMode(true)  
+        setConnectionData(obj)
+        setClick(1)
+      } else {
+        if(click == 1) {
+          setClick(2)
+          setLeftBarSize('100%')
+          setConnectionMode(false)
+          setPDFView(true)
+        } else if(click == 2) {
+          setClick(3)
+          setLeftBarSize('0%')
+          setConnectionMode(true)
+          setPDFView(false)
+        } else {
+          setClick(1)
+          setLeftBarSize('50%')
+          setConnectionMode(true)
+          setPDFView(true)
+        }
+      }
+    }
+  },[ linkId, click ])
 
   const handleComment = () => {
     
@@ -103,6 +150,7 @@ const App = () => {
   }
 
   const handlePdfView = (obj) => {		    
+
     if(Object.keys(obj).length > 0 && typeof obj.document_file != 'undefined') {
       setIllustrationSize('50%')
       setPDFFile({ document: obj.document_file, form: obj.document_form, agreement: obj.document_agreement }) 
@@ -124,14 +172,15 @@ const App = () => {
     }    
 	}
 
-  const handleUSPTO = (mode, patentObj) => {    
+  const handleUSPTO = (mode, patentObj) => { 
+    setClick(0)   
+    setLinkId(null)
     setUsptoMode(mode)
+    setLineId(0)
     setIllustrationSize('50%')
-    if(pdfView === true && mode == true) {
-      setLeftBarSize('50%')
-    } else if(pdfView === true && mode == false){
-      setLeftBarSize('100%') 
-    } else if(pdfView === false && mode == true ) { 
+    setPDFView(false)
+    setConnectionMode(false)
+    if( mode == true ) { 
       setLeftBarSize('0%') 
     }
     if(mode === false) {
@@ -142,12 +191,20 @@ const App = () => {
     } else {
       setAsset(patentObj.original_number)
     }  
-    
-    
   }
 
   const toggleShow3rdParities = () => {
     setShowThirdParties(!showThirdParties)
+  }
+
+  const onHandleReset = () => {
+    setClick(0)   
+    setLinkId(0)
+    setLineId(0)
+    setUsptoMode(false)
+    setConnectionMode(false)
+    setPDFView(false)
+    setIllustrationSize('100%')
   }
 
   return (
@@ -196,6 +253,8 @@ const App = () => {
                       pdfFile={pdfFile}
                       toggleShow3rdParities={toggleShow3rdParities}
                       usptoMode={usptoMode}
+                      lineId={lineId}
+                      reset={onHandleReset}
                     /> 
                   )
                 }
@@ -220,17 +279,22 @@ const App = () => {
                 {
                   pdfView === true 
                   ?
-                    <PdfViewer c={leftBarSize} pdfTab={pdfTab} pdfFile={pdfFile} display={true} setPdfTabIndex={setPdfTabIndex} usptoMode={usptoMode}/>
+                    <PdfViewer  c={leftBarSize} pdfTab={pdfTab} pdfFile={pdfFile} display={true} setPdfTabIndex={setPdfTabIndex} usptoMode={usptoMode} connectionMode={connectionMode}/>
                   :
-                  <div></div>
+                  <div></div> 
                 } 
                 {
+                  connectionMode === true
+                  ?
+                    <ConnectionBox display={"false"} assets={connectionData} url={apiURL}/>
+                  :                  
                   usptoMode === true  
                   ?
                     <USPTOContainer asset={asset}  apiURL={apiURL}/>
                   :
                   <div></div>
-                }              
+                }   
+
               </SplitPane>
           </SplitPane>
         </Grid>

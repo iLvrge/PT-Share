@@ -1432,6 +1432,7 @@ class PatentrackDiagram extends React.Component {
     return v_ >= min_ && v_ <= max_;
   }
 
+
   render() {
     this.data = {
       inventors: [],
@@ -1545,10 +1546,11 @@ class PatentrackDiagram extends React.Component {
           id={"PatentrackLink_" + link_.id}
           key={"Link_" + i_}
           svg={"svg_" + this.prefix}
-          connectionBox={this.props.connectionBox}
+          connectionBox={this.props.connectionBox} 
           parent={"patentLinksGroup"}
           data={linkData}
           config={config}
+          lineId={this.props.lineId}  
         />
       );
     });
@@ -1655,6 +1657,7 @@ class PatentrackDiagram extends React.Component {
       <div
         id={"patentrackDiagramDiv"}
         ref={divElement => (this.divElement = divElement)}
+        onClick={this.props.reset}
       >
         <PatentTopTitle
           width={this.props.parentWidth}

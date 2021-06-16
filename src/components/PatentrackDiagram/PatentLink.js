@@ -60,7 +60,7 @@ function remapFloat(v_, min0_, max0_, min1_, max1_) {
 const time2String = dateStr => moment(dateStr).format("MM/DD/YYYY");
 
 export default function PatentLink(props) {
-  const { data, config, parent, svg, comment, connectionBox } = props;
+  const { data, config, parent, svg, comment, connectionBox, lineId } = props;
 
   function resetAllActivePDF() {
     const element = document.querySelector(
@@ -394,16 +394,15 @@ export default function PatentLink(props) {
               el.setAttribute('stroke-width',config.link.width)
             }
           })
-        }
+        } 
 
         connectionBox(data.line, comment);
       });
-
     g.append("path")
       .attr("d", straightPath)
       .attr("id", "link_" + data.id)
       .attr("pointer-events", "none")
-      .attr("stroke-width", config.link.width)
+      .attr("stroke-width", lineId == data.line.id ? config.link.active.width : config.link.width)
       .attr("stroke", data.color)
       .attr("fill", "none");
 

@@ -11,7 +11,7 @@ import FullscreenIcon from '@material-ui/icons/Fullscreen'
 
 function PdfViewer(props) {
   const viewerRef = useRef();
-  const { pdfTab, setPdfTabIndex, usptoMode } = props
+  const { pdfTab, setPdfTabIndex, usptoMode, connectionMode } = props
   const classes = useStyles()
   const [ mainPdf, setMainPdf ] = useState('about:blank')
   const [ formPdf, setFormPdf ] = useState('about:blank')
@@ -25,7 +25,7 @@ function PdfViewer(props) {
     if(iframeElement != null) {
         /* const height = props.fullScreen === false ? parentElement.parentNode.clientHeight : ( props.pdfFile.agreement == '' || props.pdfFile.agreement == null) ?  window.innerHeight : parentElement.clientHeight */
        const height =  window.innerHeight
-      iframeElement.style.height = height - 43 + 'px' 
+      iframeElement.style.height = connectionMode === false ? height - 43 + 'px' : '100%'
       parentElement.style.height = '100%' 
     }    
   } 
@@ -34,9 +34,9 @@ function PdfViewer(props) {
     const parentElement = viewerRef.current
     if( parentElement != null ) {
       const height =  window.innerHeight
-      parentElement.querySelector('div').style.height = height - 43 + 'px' 
+      parentElement.querySelector('div').style.height = connectionMode === false ? height - 43 + 'px' : '100%'
     }
-  }, [viewerRef])
+  }, [viewerRef, connectionMode])
 
   useEffect(()=> {
     if(props.pdfView == 'true') {
@@ -72,7 +72,7 @@ function PdfViewer(props) {
   }
   
   return (
-    <div style={{height: usptoMode === false ? 'calc(100vh - 43px)' : '100%', width: '100%'}}>
+    <div style={{height: connectionMode === false ? 'calc(100vh - 43px)' : '100%', width: '100%'}}>
       <div 
           className={classes.pdfContainer} 
           >

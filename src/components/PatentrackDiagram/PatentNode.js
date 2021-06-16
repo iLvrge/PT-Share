@@ -166,7 +166,7 @@ export default function PatentNode(props) {
         node,
       ); 
 
-    if (data.document != null && data.document != "") {
+    /* if (data.document != null && data.document != "") {
       g.append("svg:image")
         .attr("xlink:href", Object.keys(pdfFile).length > 0 && pdfFile.document == data.document ?  config.pdfIconActive  : config.pdfIcon)
         .attr("width", node.pdf.size)
@@ -202,7 +202,7 @@ export default function PatentNode(props) {
             pdfView({})
           }
         });
-    }
+    } */
 
     let executionDate =
       data.executionDate != "" ? time2String(data.executionDate) : "N/A";
@@ -223,7 +223,7 @@ export default function PatentNode(props) {
 
     if (data.type < 3) {
       g.append("text")
-        .attr("dx", datesOffsetX)
+        .attr("dx", offsetX)
         .attr("dy", "3.05rem")
         .attr("font-size", node.datesSize)
         .attr("fill", node.fontColor)
@@ -232,7 +232,7 @@ export default function PatentNode(props) {
             ? "<tspan>Filled: " +
                 filledDate +
                 '</tspan><tspan x="' +
-                datesOffsetX +
+                offsetX +
                 '" dy="' +
                 node.height * 2e-1 +
                 '">' +
@@ -242,7 +242,7 @@ export default function PatentNode(props) {
             : "<tspan>" +
                 executionHTML +
                 '</tspan><tspan x="' +
-                datesOffsetX +
+                offsetX +
                 '" dy="' +
                 node.height * 2e-1 +
                 '">' +
