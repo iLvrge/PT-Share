@@ -20,7 +20,7 @@ const Assets = ({handleIllustration, apiURL}) => {
             format: numberWithCommas,
             label: "Assets",
             dataKey: "asset",
-            align: "left",
+            align: "center",
             paddingLeft: 20,
             badge: true
         },

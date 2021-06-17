@@ -108,7 +108,7 @@ function ConnectionBox(props) {
                   <ShowText data={moment(new Date(info[0].recordedDate)).format('MMM. DD YYYY')}/>                  
                 </TableCell>
                 <TableCell className={classes.fixedWidth}>    
-                  <ShowText classes={classes.red} data={`Laps`}/>
+                  <ShowText classes={classes.red} data={`Lapsed`}/>
                   <ShowText classes={`${classes.marginBottom} ${dateDifference(info[0].patAssignorEarliestExDate, info[0].recordedDate) > 90 ? classes.blue : ''} `} data={`${dateDifference(info[0].patAssignorEarliestExDate, info[0].recordedDate)} days`} />              
                   <ShowText classes={classes.red} data={`Reel/frame`}/>
                   <ShowText data={info[0].displayId}/>
