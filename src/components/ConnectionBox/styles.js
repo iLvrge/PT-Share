@@ -32,9 +32,9 @@ export default makeStyles(theme => ({
   },
   container: {
     flexGrow: 1,
-    height: '100%',
+    height: '91%',
     position: 'absolute',
-    overflow: 'auto',
+    overflow: 'hidden scroll',
     background: '#424242',
     top: 0,
     left: 0,
@@ -66,10 +66,14 @@ export default makeStyles(theme => ({
   red: {
     color: '#e60000 !important'
   },
+  table:{
+    tableLayout: 'fixed'
+  },
   tablebg:{
-    background: '#424242'
+    
   },
   cellHeading:{
+    whiteSpace: 'nowrap',
     padding: '19px 19px 17px 19px', 
     background: '#292929', 
     '& .MuiTypography-body2':{

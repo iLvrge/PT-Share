@@ -149,22 +149,22 @@ body {
 
 @media (80em <= width <= 95em) {
   html {
-    font-size: 0.85rem;
+    font-size: 0.875rem;
   }
 }
 @media (60em <= width <= 80em) {
   html {
-    font-size: 0.7rem;
+    font-size: 0.875rem;
   }
 }
 @media (40em <= width <= 60em) {
   html {
-    font-size: 0.5rem;
+    font-size: 0.875rem;
   }
 }
 
 @media (max-width: 40em) {
   html {
-    font-size: 0.4rem;
+    font-size: 0.875rem;
   }
 }

@@ -73,7 +73,7 @@ function ConnectionBox(props) {
             <TableBody>
             <TableRow>
                 <TableCell>
-                  <ShowText classes={classes.red} data={`Assignor's`}/>
+                  <ShowText classes={classes.red} data={`Assignors`}/>
                   {
                     info[0].patAssignorName.map( (assignor, index) =>(
                       <ShowText key={`assignor-${index}`} className={index > 0 && index < info[0].patAssignorName.length ? classes.marginBottom : ''} data={assignor}/>
@@ -81,7 +81,7 @@ function ConnectionBox(props) {
                   }
                 </TableCell>
                 <TableCell>
-                  <ShowText classes={classes.red} data={`Assignee's`}/>
+                  <ShowText classes={classes.red} data={`Assignees`}/>
                   {
                     info[0].patAssigneeName.map( (assignee, index) =>(
                       <ShowText key={`assignee-${index}`} className={index > 0 && index < info[0].patAssigneeName.length ? classes.marginBottom : ''} data={assignee} />
@@ -89,14 +89,12 @@ function ConnectionBox(props) {
                   }
                 </TableCell>
                 <TableCell>
-                  <ShowText classes={classes.red} data={`Address`}/>
+                  <ShowText classes={classes.red} data={`Assignee's Address`}/>
                   {
                     info[0].patAssigneeName.map( (assignee, index) => (
                       <div className={index > 0 && index < info[0].patAssigneeName.length ? classes.marginBottom : ''}>
                         <ShowText data={info[0].patAssigneeAddress1[index]}/>
-                        <ShowText data={info[0].patAssigneeCity[index]}/>
-                        <ShowText data={info[0].patAssigneeState[index]}/>
-                        <ShowText data={info[0].patAssigneePostcode[index]}/>
+                        <ShowText data={`${info[0].patAssigneeCity[index]} ${info[0].patAssigneeState[index]} ${info[0].patAssigneePostcode[index]}`}/>
                       </div>
                     ))
                   }                  
