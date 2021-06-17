@@ -22,28 +22,27 @@ function useDimensions() {
 
 const App = () => {
   const targetRef = useRef()
-  const [data, setData] = useState(null)	
-  const [pdfView, setPDFView] = useState(false)
-  const [pdfFile, setPDFFile] = useState({document: '', form: '', agreement: ''})
-  const [pdfTab, setPdfTabIndex] = useState(2)
+  const [ data, setData] = useState(null)	
+  const [ pdfView, setPDFView] = useState(false)
+  const [ pdfFile, setPDFFile] = useState({document: '', form: '', agreement: ''})
+  const [ pdfTab, setPdfTabIndex] = useState(2)
   const [ topPosition, setTopPosition ] = useState(0) 
   const [ parent_width, setParentWidth ] = useState(0)
   const [ bottomToolbarPosition, setBottomToolbarPosition ] = useState(0)
-  const [size, setSize] = useState(useDimensions)
-  const [assetsSize, setAssetsSize] = useState('10%')
-  const [illustrationSize, setIllustrationSize] = useState('100%')
-  const [leftBarSize, setLeftBarSize] = useState('100%')
+  const [ illustrationSize, setIllustrationSize] = useState('100%')
+  const [ leftBarSize, setLeftBarSize] = useState('100%')
   const [ gap, setGap ] = useState( { x: '14.1rem', y: '7.5rem'} )
   const [ showThirdParties, setShowThirdParties ] = useState(true)
   const [ usptoMode, setUsptoMode ] = useState(false)
   const [ connectionMode, setConnectionMode ] = useState(false)
   const [ connectionData, setConnectionData ] = useState(null)
+  const [ code, setCode ] = useState(null)
   const [ linkId, setLinkId ] = useState(null)
   const [ click, setClick ] = useState(0)
   const [ lineId, setLineId ] = useState(0)
   const [ asset, setAsset ] = useState(null)	
-  const [isDrag, setIsDrag] = useState(false)
-  const [isDragRight, setIsDragRight] = useState(false)
+  const [ isDrag, setIsDrag] = useState(false)
+  const [ isDragRight, setIsDragRight] = useState(false)
   const apiURL = 'https://betapp.patentrack.com/'
 
   
@@ -72,9 +71,11 @@ const App = () => {
   } 
   
   const handleIllustration = useCallback(async (asset, shareCode) => {
+    setCode(shareCode)
     setPDFView(false)
     setClick(0)
     setLineId(0)
+    setLinkId(null)
     setPDFFile({ document: '', form: '', agreement: '' }) 
     setUsptoMode( prev => {
       if(prev === false) {
@@ -101,7 +102,6 @@ const App = () => {
 
   const handleConnectionBox = useCallback((obj) => {
     if (typeof obj.popup != 'undefined') {
-      console.log("connection", obj)
       setLineId(obj.id)
       if(linkId != obj.popuptop) {
         setLinkId(obj.popuptop)
@@ -145,8 +145,26 @@ const App = () => {
     
   }
 
-  const handleShare = () => {
-    
+  const handleShare = (obj) => {
+    if (obj != null && typeof obj.original_number != undefined && obj.original_number != null) {
+      const request = new Request(`${apiURL}share/illustration/${obj.original_number}${code}`);
+			fetch(request)
+			.then(response => {
+				if (response.status === 200) {
+					(async () => {
+						const shareURL = await response.text();
+						if (shareURL.indexOf('share') >= 0) {
+              /**
+               * just for temporary replacing
+               */
+              window.open(shareURL,'_BLANK')
+            }
+					})();
+				} else {
+					//throw new Error('Something went wrong on api server!');
+				}
+			})
+    }
   }
 
   const handlePdfView = (obj) => {		    
@@ -197,15 +215,18 @@ const App = () => {
     setShowThirdParties(!showThirdParties)
   }
 
-  const onHandleReset = () => {
-    setClick(0)   
-    setLinkId(0)
-    setLineId(0)
-    setUsptoMode(false)
-    setConnectionMode(false)
-    setPDFView(false)
-    setIllustrationSize('100%')
-  }
+  const onHandleReset = useCallback(() => {
+    console.log("Outside Clicked")
+    if( lineId > 0 ) {
+      setClick(0)   
+      setLinkId(0)
+      setLineId(0)
+      setUsptoMode(false)
+      setConnectionMode(false)
+      setPDFView(false)
+      setIllustrationSize('100%')  
+    }    
+  }, [lineId])
 
   return (
     <div className={'root'}>

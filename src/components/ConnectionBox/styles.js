@@ -10,6 +10,9 @@ export default makeStyles(theme => ({
     color: '#fff',
     '& .MuiTableCell-body, .MuiTableCell-root, .MuiTableCell-head, .MuiButtonBase-root':{
       color: '#fff',
+    },
+    '& .MuiTableCell-root':{
+      borderBottom: '1px solid #5c5c5c'
     }
   },
   pdfContainer: {
@@ -30,8 +33,12 @@ export default makeStyles(theme => ({
   container: {
     flexGrow: 1,
     height: '100%',
-    position: 'relative',
+    position: 'absolute',
     overflow: 'auto',
+    background: '#424242',
+    top: 0,
+    left: 0,
+    width: '100%'
   },
   outsource: {
     width: '100%',
@@ -57,6 +64,31 @@ export default makeStyles(theme => ({
     width:180
   },
   red: {
-    color: '#e60000'
+    color: '#e60000 !important'
+  },
+  tablebg:{
+    background: '#424242'
+  },
+  cellHeading:{
+    padding: '19px 19px 17px 19px', 
+    background: '#292929', 
+    '& .MuiTypography-body2':{
+      fontSize: '1rem'
+    }    
+  },
+  blue:{
+    color: '#228DE8',
+    fontWeight: 'bold' 
+  },
+  marginHeading: {
+    '& .MuiTypography-body2':{
+      marginBottom: 5,
+      '&:last-child':{
+        marginBottom: 0
+      }
+    }
+  },
+  marginBottom: {
+    marginBottom: 5,
   }
 }))

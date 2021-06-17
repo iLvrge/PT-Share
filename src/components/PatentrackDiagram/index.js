@@ -1656,15 +1656,14 @@ class PatentrackDiagram extends React.Component {
     return (
       <div
         id={"patentrackDiagramDiv"}
-        ref={divElement => (this.divElement = divElement)}
-        onClick={this.props.reset}
+        /* ref={divElement => (this.divElement = divElement)} */       
       >
         <PatentTopTitle
           width={this.props.parentWidth}
           titleTop={this.props.titleTop}
           title={this.parseTitle()}
         />
-        <div style={{ overflow: "auto", marginTop: "-23px", minHeight: "calc(100vh - 113px)" }}>
+        <div style={{ overflow: "auto", marginTop: "-23px", minHeight: "calc(100vh - 113px)", width: '100%' }} onClick={this.props.reset}>
           <svg
             className="diagram-container"
             id={"svg_" + this.prefix}

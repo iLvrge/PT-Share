@@ -20,7 +20,8 @@ label span{ padding: 0px 4px 0px 8px; position: relative; vertical-align: middle
     align-items: center; 
     width: 100%;
     display: flex;
-    height: 57px;
+    height: 56px;
+    border-bottom: 1px solid #5c5c5c;
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
      -khtml-user-select: none; /* Konqueror HTML */
@@ -57,7 +58,7 @@ label span{ padding: 0px 4px 0px 8px; position: relative; vertical-align: middle
     width: 100%;
     height: 36px;
     position: sticky;
-    bottom: 0;
+    bottom: 0; 
 }
 
 #bottomUIToolbarExpanded {

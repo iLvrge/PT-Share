@@ -21,7 +21,8 @@ const Assets = ({handleIllustration, apiURL}) => {
             label: "Assets",
             dataKey: "asset",
             align: "left",
-            paddingLeft: 20
+            paddingLeft: 20,
+            badge: true
         },
     ]
     const classes = useStyles()
@@ -84,6 +85,8 @@ const Assets = ({handleIllustration, apiURL}) => {
                         onSelect={handleClick}
                         defaultSelectAll={selectedAll}
                         responsive={true}
+                        grandTotal={assetsList.length}
+                        totalRows={assetsList.length}
                         width={width} 
                         containerStyle={{ 
                         width: '100%',

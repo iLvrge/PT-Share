@@ -358,6 +358,7 @@ export default function PatentLink(props) {
                   time2String(data.line.recorded) +
                   "</tspan>",
           ); */  
+          d3.selectAll(".link-tooltip").remove();
           const bodyElement = document.querySelector('body')
           const tooltipElement = document.createElement('div')
           tooltipElement.classList.add('link-tooltip')
@@ -368,8 +369,8 @@ export default function PatentLink(props) {
             data.category.charAt(0).toLowerCase() +
               data.category.slice(1).replace(" ", "")
           ]};padding:5px`
-          tooltipElement.innerHTML = `<div>${data.category}</div><div>Execution: ${time2String(data.line.date)}</div><div>Recorded: ${time2String(data.line.recorded)}</div>`
-          console.log('tooltipElement', tooltipElement)
+          tooltipElement.innerHTML = `<div>${data.category}</div><div>Executed: ${time2String(data.line.date)}</div><div>Recorded: ${time2String(data.line.recorded)}</div>`
+          //console.log('tooltipElement', tooltipElement)
           bodyElement.appendChild(tooltipElement) 
       })
       .on("mouseout", () => {
