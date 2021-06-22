@@ -63,8 +63,8 @@ const App = () => {
   const [ assetFilesBarSize, setAssetFilesBarSize ] = useState(0)
   const [ assetFilesBar, setAssetFilesBar ] = useState(false)
   const [ openGoogleDriveBar, setGoogleDriveBar] = useState(false) 
-  /* const apiURL = 'https://betapp.patentrack.com/' */
-  const apiURL = 'http://localhost:3600/'
+  const apiURL = 'https://betapp.patentrack.com/' 
+  /* const apiURL = 'http://localhost:3600/' */
 
   
   useEffect(() => {
