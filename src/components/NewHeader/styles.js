@@ -353,5 +353,52 @@ export default makeStyles(theme => ({
         '& span':{
             display: 'block'
         }
-    }
+    },
+    clipIcon:{
+        '& svg':{
+            width: 24,
+            height: 24,
+            fill: '#5a5a5a',
+            stroke: '#5a5a5a'
+        },
+        '&:hover':{
+            '& svg':{
+                fill: 'rgb(230, 0, 0)',
+                stroke: 'rgb(230, 0, 0)',
+            }
+        }        
+    },
+    clipIconActive: {
+        '& svg':{
+            fill: '#f48fb1',
+            stroke: '#f48fb1' 
+        },
+    },
+    clipIconIsActive: {
+        '& svg':{
+            fill: '#FFF',
+            stroke: '#FFF' 
+        },
+        '&:hover':{
+            '& svg':{
+                fill: '#FFF',
+                stroke: '#FFF' 
+            }
+        }  
+    },
+    modalClipboard: {
+        margin: '100px auto',
+        width: 800,
+        height: '50vh' 
+    },
+    rootClipboard: {
+        height: '100%',
+        width: '100%',
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        '& .vis-panel.vis-background.vis-horizontal .vis-grid': {
+            borderColor: '#e5e5e51c',
+        }
+    },
 }))

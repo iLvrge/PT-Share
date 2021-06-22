@@ -137,6 +137,33 @@ body {
   display: none;
 }
 
+.filterToolbar {
+  width: 3.5rem;
+  border-Right: 0;
+}
+.flex {
+  width: 3.5rem;
+  position: absolute;
+}
+.bottom {
+  bottom: 0
+}
+
+.illustration_comment_container{
+  position: relative;
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+.comment_container{
+  position: relative;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  background: #424242;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

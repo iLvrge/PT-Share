@@ -9,7 +9,7 @@ const numberWithCommas = (x) => {
     return x != undefined ? x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : ''
 }
 
-const Assets = ({handleIllustration, apiURL}) => {
+const Assets = ({handleIllustration, setCompanyLogo,  apiURL}) => {
 
     const COLUMNS = [
         {
@@ -48,9 +48,10 @@ const Assets = ({handleIllustration, apiURL}) => {
                 .then(response => {
                     if (response.status === 200) {
                         (async () => {
-                        const list = await response.json();
-                        setLoadingAssets(false)
-                        setAssetsList(list);
+                        const { list, logo } = await response.json();
+                            setLoadingAssets(false)
+                            setAssetsList(list)
+                            setCompanyLogo(logo)
                         })();
                     } else {
                         throw new Error('Something went wrong on api server!');

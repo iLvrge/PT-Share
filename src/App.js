@@ -12,6 +12,8 @@ import PdfViewer from './components/PdfViewer'
 import USPTOContainer from './components/USPTOContainer'
 import NewHeader from './components/NewHeader'
 import ConnectionBox from './components/ConnectionBox'
+import NavigationIcon from './components/NavigationIcon'
+import AssetsCommentsTimeline from './components/AssetsCommentTimeline'
 
 import './App.css'
 import { AirlineSeatReclineExtraOutlined } from '@material-ui/icons'
@@ -22,6 +24,7 @@ function useDimensions() {
 
 const App = () => {
   const targetRef = useRef()
+  const illustrationRef = useRef()
   const [ data, setData] = useState(null)	
   const [ pdfView, setPDFView] = useState(false)
   const [ pdfFile, setPDFFile] = useState({document: '', form: '', agreement: ''})
@@ -35,15 +38,33 @@ const App = () => {
   const [ showThirdParties, setShowThirdParties ] = useState(true)
   const [ usptoMode, setUsptoMode ] = useState(false)
   const [ connectionMode, setConnectionMode ] = useState(false)
+  const [ companyLogo, setCompanyLogo ] = useState(null)
   const [ connectionData, setConnectionData ] = useState(null)
   const [ code, setCode ] = useState(null)
   const [ linkId, setLinkId ] = useState(null)
   const [ click, setClick ] = useState(0)
   const [ lineId, setLineId ] = useState(0)
+  const [ commentBarSize, setCommentBarSize ] = useState(`30%`)
   const [ asset, setAsset ] = useState(null)	
   const [ isDrag, setIsDrag] = useState(false)
   const [ isDragRight, setIsDragRight] = useState(false)
-  const apiURL = 'https://betapp.patentrack.com/'
+
+  const [ openBar, setOpenBar ] = useState(false)
+  const [ openTypeBar, setTypeOpenBar ] = useState(false)
+  const [ openOtherPartyBar, setOtherPartyOpenBar ] = useState(false)
+  const [ openInventorBar, setInventorOpenBar ] = useState(false)
+  const [ openAssignmentBar, setAssignmentOpenBar ] = useState(false)
+  const [ openCustomerBar, setCustomerOpenBar ] = useState(false)
+  const [ openIllustrationBar, setIllustrationBar ] = useState(true)
+  const [ openCommentBar, setCommentBar ] = useState(true)
+  const [ openChartBar, setChartBar ] = useState(false)
+  const [ openAnalyticsBar, setAnalyticsBar ] = useState(false)
+  const [ openVisualizerBar, setVisualizeOpenBar ] = useState(false)
+  const [ assetFilesBarSize, setAssetFilesBarSize ] = useState(0)
+  const [ assetFilesBar, setAssetFilesBar ] = useState(false)
+  const [ openGoogleDriveBar, setGoogleDriveBar] = useState(false) 
+  /* const apiURL = 'https://betapp.patentrack.com/' */
+  const apiURL = 'http://localhost:3600/'
 
   
   useEffect(() => {
@@ -216,7 +237,6 @@ const App = () => {
   }
 
   const onHandleReset = useCallback(() => {
-    console.log("Outside Clicked")
     if( lineId > 0 ) {
       setClick(0)   
       setLinkId(0)
@@ -228,95 +248,240 @@ const App = () => {
     }    
   }, [lineId])
 
+  const handleAlert = () => {
+
+  }
+
+  const handleIllustrationBarOpen = () => {
+
+  }
+
+  const handleCommentBarOpen = () => {
+
+  }
+
+  const handleChartBarOpen = () => {
+
+  }
+
+  const handleAnalyticsBarOpen = () => {
+
+  }
+
+  const topToolBar = [
+    {
+      tooltip: 'Settings',
+      bar: false,
+      click: handleAlert,
+      t: 0
+    },
+    {
+      tooltip: 'Companies',
+      bar: openBar,
+      click: handleAlert,
+      t: 1
+    },
+    {
+      tooltip: 'Activities',
+      bar: openTypeBar,
+      click: handleAlert,
+      t: 2
+    },
+    {
+      tooltip: 'Parties',
+      bar: openOtherPartyBar,
+      click: handleAlert,
+      t: 3
+    },
+    {
+      tooltip: 'Inventors',
+      bar: openInventorBar,
+      click: handleAlert,
+      t: 11
+    },
+    {
+      tooltip: 'Assignments',
+      bar: openAssignmentBar,
+      click: handleAlert,
+      t: 4
+    },
+    {
+      tooltip: 'Assets',
+      bar: openCustomerBar,
+      click: handleAlert,
+      t: 5
+    },
+    {
+      tooltip: 'Documents',
+      bar: assetFilesBar,
+      click: handleAlert,
+      t: 10
+    },
+    {
+      tooltip: 'Google Drive',
+      bar: openGoogleDriveBar,
+      click: handleAlert,
+      t: 12
+    },
+  ]
+
+  const bottomToolBar = [
+    {
+      tooltip: 'Illustration',
+      bar: openIllustrationBar,
+      click: handleIllustrationBarOpen,
+      t: 6
+    },
+    {
+      tooltip: 'Slack bar',
+      bar: openCommentBar,
+      click: handleCommentBarOpen,
+      t: 7
+    },
+    {
+      tooltip: 'Charts',
+      bar: openChartBar,
+      click: handleChartBarOpen,
+      t: 8
+    },
+    {
+      tooltip: 'Analytics',
+      bar: openAnalyticsBar,
+      click: handleAnalyticsBarOpen,
+      t: 9
+    }
+  ]
+
   return (
     <div className={'root'}>
-      <NewHeader/>
+      <NewHeader logo={companyLogo}/>
       <Grid container >
         <Grid container >
-            <Assets 
-              handleIllustration={handleIllustration}
-              apiURL={apiURL}
-            />
-            <SplitPane
-              className={`splitPane`}
-              split="vertical"
-              size={illustrationSize} 
-              onDragStarted={() => {
-                setIsDrag(true);
-              }}
-              onDragFinished={size => {
-                setIsDrag(false);
-              }}
-              pane1Style={{
-                pointerEvents: isDrag ? 'none' : 'auto',
-              }}
-              pane2Style={{
-                pointerEvents: isDrag ? 'none' : 'auto',
-              }}
-              
-            >
-              <div className={'forceStrech'} ref={targetRef}>
+          <div className={`filterToolbar`}> 
+            <div className={`flex`}>                            
                 {
-                  data != null && (
-                    <PatentrackDiagram 
-                      data={data} 
-                      connectionBox={handleConnectionBox} 
-                      comment={handleComment} 
-                      share={handleShare} 
-                      pdfView={handlePdfView} 
-                      uspto={handleUSPTO}
-                      titleTop={topPosition} 
-                      toolbarBottom={bottomToolbarPosition} 
-                      parentWidth={parseInt(parent_width)} 
-                      key={"PatentDiagram_" + "_" + Math.random() }
-                      gap={gap}
-                      showThirdParties={showThirdParties}
-                      pdfFile={pdfFile}
-                      toggleShow3rdParities={toggleShow3rdParities}
-                      usptoMode={usptoMode}
-                      lineId={lineId}
-                      reset={onHandleReset}
-                    /> 
-                  )
+                    topToolBar.map( (item, index) => (
+                        <NavigationIcon key={index} {...item}/>
+                    ))
                 }
-              </div>            
+            </div>
+            <div className={`flex bottom`}>
+                {
+                    bottomToolBar.map( (item, index) => (
+                        <NavigationIcon key={index} {...item}/>
+                    ))
+                }
+            </div>
+        </div>
+          <Assets 
+            handleIllustration={handleIllustration}
+            apiURL={apiURL}
+            setCompanyLogo={setCompanyLogo}
+          />
+          <SplitPane
+            className={`splitPane`}
+            split="vertical"
+            size={illustrationSize} 
+            onDragStarted={() => {
+              setIsDrag(true);
+            }}
+            onDragFinished={size => {
+              setIsDrag(false);
+            }}
+            pane1Style={{
+              pointerEvents: isDrag ? 'none' : 'auto',
+            }}
+            pane2Style={{
+              pointerEvents: isDrag ? 'none' : 'auto',
+            }}
+            
+          >
+            <div className={`illustration_comment_container`}>
               <SplitPane
-                className={`splitPane pan3`}
                 split={`horizontal`}
-                size={leftBarSize}
+                minSize={50} 
+                defaultSize={commentBarSize}
                 onDragStarted={() => {
-                  setIsDragRight(true);
+                  setIsDrag(!isDrag)
                 }}
-                onDragFinished={size => {
-                  setIsDragRight(false);
-                }}
+                onDragFinished={(size) => {
+                  setIsDrag(!isDrag)  
+                  setCommentBarSize(size)
+                }} 
+                maxSize={-10} 
+                primary={'second'}
+                ref={illustrationRef}
                 pane1Style={{
-                  pointerEvents: isDragRight || isDrag ? 'none' : 'auto',
-                }}
-                pane2Style={{
-                  pointerEvents: isDragRight || isDrag ? 'none' : 'auto',
+                  pointerEvents: isDrag === true ? 'none' : 'auto',
                 }}
               >
-                {
-                  pdfView === true 
-                  ?
-                    <PdfViewer  c={leftBarSize} pdfTab={pdfTab} pdfFile={pdfFile} display={true} setPdfTabIndex={setPdfTabIndex} usptoMode={usptoMode} connectionMode={connectionMode}/>
-                  :
-                  <div></div> 
-                } 
-                {
-                  connectionMode === true
-                  ?
-                    <ConnectionBox display={"false"} assets={connectionData} url={apiURL}/>
-                  :                  
-                  usptoMode === true  
-                  ?
-                    <USPTOContainer asset={asset}  apiURL={apiURL}/>
-                  :
-                  <div></div>
-                }   
-
+                <div className={'forceStrech'} ref={targetRef}>
+                  {
+                    data != null && (
+                      <PatentrackDiagram 
+                        data={data} 
+                        connectionBox={handleConnectionBox} 
+                        comment={handleComment} 
+                        share={handleShare} 
+                        pdfView={handlePdfView} 
+                        uspto={handleUSPTO}
+                        titleTop={topPosition} 
+                        toolbarBottom={bottomToolbarPosition} 
+                        parentWidth={parseInt(parent_width)} 
+                        key={"PatentDiagram_" + "_" + Math.random() }
+                        gap={gap}
+                        showThirdParties={showThirdParties}
+                        pdfFile={pdfFile}
+                        toggleShow3rdParities={toggleShow3rdParities}
+                        usptoMode={usptoMode}
+                        lineId={lineId}
+                        reset={onHandleReset}
+                      /> 
+                    )
+                  }
+                </div>
+                <div className={`comment_container`}>
+                  <AssetsCommentsTimeline asset={asset} code={code}/>
+                </div>
               </SplitPane>
+            </div>                        
+            <SplitPane
+              className={`splitPane pan3`}
+              split={`horizontal`}
+              size={leftBarSize}
+              onDragStarted={() => {
+                setIsDragRight(true);
+              }}
+              onDragFinished={size => {
+                setIsDragRight(false);
+              }}
+              pane1Style={{
+                pointerEvents: isDragRight || isDrag ? 'none' : 'auto',
+              }}
+              pane2Style={{
+                pointerEvents: isDragRight || isDrag ? 'none' : 'auto',
+              }}
+            >
+              {
+                pdfView === true 
+                ?
+                  <PdfViewer  c={leftBarSize} pdfTab={pdfTab} pdfFile={pdfFile} display={true} setPdfTabIndex={setPdfTabIndex} usptoMode={usptoMode} connectionMode={connectionMode}/>
+                :
+                <div></div> 
+              } 
+              {
+                connectionMode === true
+                ?
+                  <ConnectionBox display={"false"} assets={connectionData} url={apiURL}/>
+                :                  
+                usptoMode === true  
+                ?
+                  <USPTOContainer asset={asset}  apiURL={apiURL}/>
+                :
+                <div></div>
+              }   
+
+            </SplitPane>
           </SplitPane>
         </Grid>
       </Grid>
