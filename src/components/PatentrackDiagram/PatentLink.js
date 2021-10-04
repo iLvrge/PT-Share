@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import moment from "moment";
 import * as d3 from "d3";
-import { Divider } from "@material-ui/core";
 
 function getStraightMedianPoints(propData) {
   let out = [];

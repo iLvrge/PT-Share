@@ -216,7 +216,7 @@ class PatentBottomUI extends React.Component {
                                                                                    icon={faComment}
                                                                                    onClick={() => this.props.comment(this.props.commentContent)} />
             </div>  */}
-          <div id="toolbarUIGap4" className="toolbarUIGap"></div>
+          {/* <div id="toolbarUIGap4" className="toolbarUIGap"></div>
           <div id="shareDiagram" className="toolbarUIElement">
             <FontAwesomeIcon
               title="share diagram"
@@ -224,7 +224,7 @@ class PatentBottomUI extends React.Component {
               onClick={() => this.props.share(this.props.patent)}
             />
           </div>
-          <div id="toolbarUIGap8" className="toolbarUIGap"></div>
+          <div id="toolbarUIGap8" className="toolbarUIGap"></div> */}
         </div>
       </div>
     ) : (

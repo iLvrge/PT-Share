@@ -52,11 +52,11 @@ const NewHeader = ({logo}) => {
 
   
   const toggleDrawer = (event, open) => {
-    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift') || event.target.classList.contains('children')  || event.target.parentNode.classList.contains('children') || event.target.parentNode.parentNode.classList.contains('children')) {
+    /* if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift') || event.target.classList.contains('children')  || event.target.parentNode.classList.contains('children') || event.target.parentNode.parentNode.classList.contains('children')) {
       return;
     }
 
-    setDrawerState({ ...openDrawer, right: open });
+    setDrawerState({ ...openDrawer, right: open }); */
   };
 
   const handleKeyDown = () => {

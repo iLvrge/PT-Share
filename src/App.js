@@ -85,6 +85,25 @@ const App = () => {
       document.getElementsByClassName('pan3')[0].querySelector('.Resizer').style.display = 'none'
     }
   }, [ connectionMode, pdfView ])
+
+  useEffect(() => {
+    let href = document.location.href;
+		href = href.toString().split('/').pop();
+		if( href != "" ) {
+			const request = new Request(`${apiURL}share/illustrate/show/${href}`);
+			fetch(request)
+			.then(response => {
+				if (response.status === 200) {
+					(async () => {
+						const dashData = await response.json();
+						setData(dashData);
+					})();
+				} else {
+					throw new Error('Something went wrong on api server!');
+				}
+			})
+		}
+	},[]);
     
 
   const resizePane = (name, size) => {
@@ -268,222 +287,94 @@ const App = () => {
 
   }
 
-  const topToolBar = [
-    {
-      tooltip: 'Settings',
-      bar: false,
-      click: handleAlert,
-      t: 0
-    },
-    {
-      tooltip: 'Companies',
-      bar: openBar,
-      click: handleAlert,
-      t: 1
-    },
-    {
-      tooltip: 'Activities',
-      bar: openTypeBar,
-      click: handleAlert,
-      t: 2
-    },
-    {
-      tooltip: 'Parties',
-      bar: openOtherPartyBar,
-      click: handleAlert,
-      t: 3
-    },
-    {
-      tooltip: 'Inventors',
-      bar: openInventorBar,
-      click: handleAlert,
-      t: 11
-    },
-    {
-      tooltip: 'Assignments',
-      bar: openAssignmentBar,
-      click: handleAlert,
-      t: 4
-    },
-    {
-      tooltip: 'Assets',
-      bar: openCustomerBar,
-      click: handleAlert,
-      t: 5
-    },
-    {
-      tooltip: 'Documents',
-      bar: assetFilesBar,
-      click: handleAlert,
-      t: 10
-    },
-    {
-      tooltip: 'Google Drive',
-      bar: openGoogleDriveBar,
-      click: handleAlert,
-      t: 12
-    },
-  ]
-
-  const bottomToolBar = [
-    {
-      tooltip: 'Illustration',
-      bar: openIllustrationBar,
-      click: handleIllustrationBarOpen,
-      t: 6
-    },
-    {
-      tooltip: 'Slack bar',
-      bar: openCommentBar,
-      click: handleCommentBarOpen,
-      t: 7
-    },
-    {
-      tooltip: 'Charts',
-      bar: openChartBar,
-      click: handleChartBarOpen,
-      t: 8
-    },
-    {
-      tooltip: 'Analytics',
-      bar: openAnalyticsBar,
-      click: handleAnalyticsBarOpen,
-      t: 9
-    }
-  ]
 
   return (
     <div className={'root'}>
       <NewHeader logo={companyLogo}/>
-      <Grid container >
-        <Grid container >
-          <div className={`filterToolbar`}> 
-            <div className={`flex`}>                            
-                {
-                    topToolBar.map( (item, index) => (
-                        <NavigationIcon key={index} {...item}/>
-                    ))
-                }
-            </div>
-            <div className={`flex bottom`}>
-                {
-                    bottomToolBar.map( (item, index) => (
-                        <NavigationIcon key={index} {...item}/>
-                    ))
-                }
-            </div>
-        </div>
-          <Assets 
-            handleIllustration={handleIllustration}
-            apiURL={apiURL}
-            setCompanyLogo={setCompanyLogo}
-          />
-          <SplitPane
-            className={`splitPane`}
-            split="vertical"
-            size={illustrationSize} 
-            onDragStarted={() => {
-              setIsDrag(true);
-            }}
-            onDragFinished={size => {
-              setIsDrag(false);
-            }}
-            pane1Style={{
-              pointerEvents: isDrag ? 'none' : 'auto',
-            }}
-            pane2Style={{
-              pointerEvents: isDrag ? 'none' : 'auto',
-            }}
-            
-          >
-            <div className={`illustration_comment_container`}>
-              <SplitPane
-                split={`horizontal`}
-                minSize={50} 
-                defaultSize={commentBarSize}
-                onDragStarted={() => {
-                  setIsDrag(!isDrag)
-                }}
-                onDragFinished={(size) => {
-                  setIsDrag(!isDrag)  
-                  setCommentBarSize(size)
-                }} 
-                maxSize={-10} 
-                primary={'second'}
-                ref={illustrationRef}
-                pane1Style={{
-                  pointerEvents: isDrag === true ? 'none' : 'auto',
-                }}
-              >
-                <div className={'forceStrech'} ref={targetRef}>
-                  {
-                    data != null && (
-                      <PatentrackDiagram 
-                        data={data} 
-                        connectionBox={handleConnectionBox} 
-                        comment={handleComment} 
-                        share={handleShare} 
-                        pdfView={handlePdfView} 
-                        uspto={handleUSPTO}
-                        titleTop={topPosition} 
-                        toolbarBottom={bottomToolbarPosition} 
-                        parentWidth={parseInt(parent_width)} 
-                        key={"PatentDiagram_" + "_" + Math.random() }
-                        gap={gap}
-                        showThirdParties={showThirdParties}
-                        pdfFile={pdfFile}
-                        toggleShow3rdParities={toggleShow3rdParities}
-                        usptoMode={usptoMode}
-                        lineId={lineId}
-                        reset={onHandleReset}
-                      /> 
-                    )
-                  }
-                </div>
-                <div className={`comment_container`}>
-                  <AssetsCommentsTimeline asset={asset} code={code}/>
-                </div>
-              </SplitPane>
-            </div>                        
-            <SplitPane
-              className={`splitPane pan3`}
-              split={`horizontal`}
-              size={leftBarSize}
-              onDragStarted={() => {
-                setIsDragRight(true);
-              }}
-              onDragFinished={size => {
-                setIsDragRight(false);
-              }}
-              pane1Style={{
-                pointerEvents: isDragRight || isDrag ? 'none' : 'auto',
-              }}
-              pane2Style={{
-                pointerEvents: isDragRight || isDrag ? 'none' : 'auto',
-              }}
-            >
-              {
-                pdfView === true 
-                ?
-                  <PdfViewer  c={leftBarSize} pdfTab={pdfTab} pdfFile={pdfFile} display={true} setPdfTabIndex={setPdfTabIndex} usptoMode={usptoMode} connectionMode={connectionMode}/>
-                :
-                <div></div> 
-              } 
-              {
-                connectionMode === true
-                ?
-                  <ConnectionBox display={"false"} assets={connectionData} url={apiURL}/>
-                :                  
-                usptoMode === true  
-                ?
-                  <USPTOContainer asset={asset}  apiURL={apiURL}/>
-                :
-                <div></div>
-              }   
+      <Grid container>
+      <SplitPane
+        className={`splitPane`}
+        split="vertical"
+        size={illustrationSize} 
+        onDragStarted={() => {
+          setIsDrag(true);
+        }}
+        onDragFinished={size => {
+          setIsDrag(false);
+        }}
+        pane1Style={{
+          pointerEvents: isDrag ? 'none' : 'auto',
+        }}
+        pane2Style={{
+          pointerEvents: isDrag ? 'none' : 'auto',
+        }}
+        
+      >
+        <div className={`illustration_comment_container`}>              
+          <div className={'forceStrech'} ref={targetRef}>
+            {
+              data != null && (
+                <PatentrackDiagram 
+                  data={data} 
+                  connectionBox={handleConnectionBox} 
+                  comment={handleComment} 
+                  share={handleShare} 
+                  pdfView={handlePdfView} 
+                  uspto={handleUSPTO}
+                  titleTop={topPosition} 
+                  toolbarBottom={bottomToolbarPosition} 
+                  parentWidth={parseInt(parent_width)} 
+                  key={"PatentDiagram_" + "_" + Math.random() }
+                  gap={gap}
+                  showThirdParties={showThirdParties}
+                  pdfFile={pdfFile}
+                  toggleShow3rdParities={toggleShow3rdParities}
+                  usptoMode={usptoMode}
+                  lineId={lineId}
+                  reset={onHandleReset}
+                /> 
+              )
+            }
+          </div>
+        </div>                        
+        <SplitPane
+          className={`splitPane pan3`}
+          split={`horizontal`}
+          size={leftBarSize}
+          onDragStarted={() => {
+            setIsDragRight(true);
+          }}
+          onDragFinished={size => {
+            setIsDragRight(false);
+          }}
+          pane1Style={{
+            pointerEvents: isDragRight || isDrag ? 'none' : 'auto',
+          }}
+          pane2Style={{
+            pointerEvents: isDragRight || isDrag ? 'none' : 'auto',
+          }}
+        >
+          {
+            pdfView === true 
+            ?
+              <PdfViewer  c={leftBarSize} pdfTab={pdfTab} pdfFile={pdfFile} display={true} setPdfTabIndex={setPdfTabIndex} usptoMode={usptoMode} connectionMode={connectionMode}/>
+            :
+            <div></div> 
+          } 
+          {
+            connectionMode === true
+            ?
+              <ConnectionBox display={"false"} assets={connectionData} url={apiURL}/>
+            :                  
+            usptoMode === true  
+            ?
+              <USPTOContainer asset={asset}  apiURL={apiURL}/>
+            :
+            <div></div>
+          }   
 
-            </SplitPane>
-          </SplitPane>
-        </Grid>
+        </SplitPane>
+      </SplitPane>
       </Grid>
     </div>
   );
