@@ -401,4 +401,39 @@ export default makeStyles(theme => ({
             borderColor: '#e5e5e51c',
         }
     },
+    calendly: {
+        border:'1px solid #5a5a5a !important',
+        marginLeft: 15,
+        textTransform: 'initial',
+        padding: '3px 5px',
+        color: '#fff',
+        '&:hover':{
+            border:'1px solid #e60000 !important',
+            color: '#e60000 !important'
+        },
+        '&:first':{
+            marginLeft: 5
+        },
+        '& .MuiButton-label':{
+            whiteSpace: 'nowrap'
+        }
+        /* '& svg': {
+            width: 60,
+            height: 60
+        },
+        '& .cls-1':{
+            fill: '#006bff'
+        },
+        '& .cls-2':{
+            fill: '#0ae8f0'
+        },
+        '&:hover': {
+            '& .cls-1':{
+                fill: '#ef0000'
+            },
+            '& .cls-2':{
+                fill: '#ef0000'
+            }
+        } */
+    }
 }))

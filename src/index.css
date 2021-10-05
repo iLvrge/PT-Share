@@ -11,3 +11,31 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+#bookMeeting {
+  position: fixed; 
+  top: 42px; 
+  z-index: 1300;
+  inset: 0px;
+  /* background-color: rgba(0, 0, 0, 0.8);  */
+  visibility: hidden;
+}
+#bookMeeting .MuiBackdrop-root {
+  top: 42px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  z-index: -1;
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  -webkit-tap-highlight-color: transparent;
+}
+.meeting-popup{
+  margin: 10px auto;
+  width: 800px;
+  max-height: 678px;
+  min-height: 516px;
+  padding-top: 20px;
+}

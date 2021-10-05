@@ -358,26 +358,53 @@ export default function PatentLink(props) {
                   "</tspan>",
           ); */  
           
-          const bodyElement = document.querySelector('body')
-          if(bodyElement.querySelector(`#tooltip_h_${data.id}`) == null) {
-            d3.selectAll(".link-tooltip").remove();
-            const tooltipElement = document.createElement('div')
-            tooltipElement.setAttribute('id', `tooltip_h_${data.id}`)
-            tooltipElement.classList.add('link-tooltip')
-            tooltipElement.style = `position:absolute;top:${dy + 55}px;left:${dx + 130}px;border:1px solid ${config.colors[
-              data.category.charAt(0).toLowerCase() +
-                data.category.slice(1).replace(" ", "")
-            ]};font-size:${config.link.tooltip.fontSize};background:${config.node.background};color:${config.colors[
-              data.category.charAt(0).toLowerCase() +
-                data.category.slice(1).replace(" ", "")
-            ]};padding:5px`
-            tooltipElement.innerHTML = `<div>${data.category}</div><div>Executed: ${time2String(data.line.date)}</div><div>Recorded: ${time2String(data.line.recorded)}</div>`
-            //console.log('tooltipElement', tooltipElement)
-            bodyElement.appendChild(tooltipElement) 
-          }          
+          let gtooltip = d3.select("#" + svg)
+                        .append('g')
+                        .attr("class", "link-tooltip")
+                        .attr("visibility", "visible")
+                        .attr("transform", `translate(${dx + 70}, ${dy})`)
+          gtooltip
+          .append("rect")
+          .attr("rx", config.link.tooltip.corners)
+          .attr("ry", config.link.tooltip.corners)
+          .attr("class", "link-tooltip")
+          .attr("width", '135')
+          .attr("height", '63')
+          .attr("fill", config.node.background)
+          .attr("stroke", config.colors[
+            data.category.charAt(0).toLowerCase() +
+              data.category.slice(1).replace(" ", "")
+          ])
+          .attr("fill-opacity", config.node.opacity);
+        let offsetX = "0.6rem";
+
+        gtooltip.append("text")
+          .attr("dx", offsetX)
+          .attr("dy", "1.1rem")
+          .attr("class", "link-tooltip")   
+          .attr("fill", '#fff')       
+          .attr("font-size", config.link.tooltip.fontSize)
+          .attr("text-rendering", "geometricPrecision")
+          .text(data.category) 
+        gtooltip.append("text")
+          .attr("dx", offsetX)
+          .attr("dy", "3.05rem")
+          .attr("class", "link-tooltip")   
+          .attr("font-size", config.link.tooltip.fontSize)
+          .attr("fill", '#fff')       
+          .html(
+            "<tspan>Execution: " +
+              time2String(data.line.date) +
+                  '</tspan><tspan x="' +
+                  offsetX +
+                  '" dy="1.1rem">' +
+                  "Recorded: " +
+                  time2String(data.line.recorded) +
+                  "</tspan>"
+            );           
       })
       .on("mouseout", () => {
-        d3.selectAll(".link-tooltip").remove();
+        d3.selectAll(".link-tooltip").remove();  
       })
       .on("click", () => {
         //passing referenced data from json.popup and handleComment
@@ -408,6 +435,7 @@ export default function PatentLink(props) {
       .attr("pointer-events", "none")
       .attr("stroke-width", lineId == data.line.id ? config.link.active.width : config.link.width)
       .attr("stroke", data.color)
+      .attr("stroke-dasharray", data.line.type_line == "Dashed" ? '5,5' : '')
       .attr("fill", "none");
 
     g.append("path")
