@@ -16,9 +16,10 @@ export default makeStyles(theme => ({
         background: '#222222',
         width: 'initial',
         border: '1px solid #363636',
-        margin: '5px'
+        marginBottom: '5px',
         //padding: `0px ${HEADER_PADDING}px`,
-       
+        overflow: 'hidden',
+        padding: '0 10px'
     },
     headerClassAction1: {
       lineHeight: "1.2em",
@@ -51,16 +52,15 @@ export default makeStyles(theme => ({
     companyLogoCon: {
         display: 'flex',
         alignItems: 'center',
-        marginLeft: 50,
-        width: '12%', 
-        justifyContent: 'flex-end', 
+        width: '15rem', 
+        justifyContent: 'flex-start', 
         cursor: 'pointer',
         '@media (max-width: 70em)': {
         //paddingLeft: 15
         },
     },
     menuButton: {
-        marginRight: theme.spacing(1),
+        padding: 0,
         '& svg': {
             color: 'white'
         },
@@ -68,11 +68,14 @@ export default makeStyles(theme => ({
             width: 20
         }
     },
+    logoContainer: {
+        width: '18.5rem',
+    },
     siteLogo: {
         /* width: LOGO_WIDTH,
         maxWidth: 'calc(100% - 30px)', */
         height: '2rem',
-        margin: '0px 15px 0 10px' 
+        marginRight: 15    
     }, 
 
     userLogo: {
@@ -82,8 +85,7 @@ export default makeStyles(theme => ({
     },
     userLogoOfficial: {
         height: '2rem', /*28px */
-        maxWidth: '100%',
-        marginRight: '20px'
+        marginRight: 15
     }, 
     organizationName: {
         marginLeft: 5,
@@ -92,8 +94,7 @@ export default makeStyles(theme => ({
 
     toolbar: {
         padding: 0,
-        height: 30,
-        minHeight: 30,
+        minHeight: 40,
         position: 'relative',
     },
     headerIcon: {
@@ -117,20 +118,31 @@ export default makeStyles(theme => ({
     rightPanel: {
         marginLeft: 'auto',
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         alignItems: 'center',
+        '& .MuiBadge-anchorOriginTopRightRectangle': {
+            transform: 'scale(1) translate(27%, 0%)',
+            padding: '0 3px',
+            minWidth: 15,
+            height: 15
+        },
+        '& .MuiBadge-anchorOriginTopRightRectangle.MuiBadge-invisible': {
+            transform: 'scale(0) translate(50%, -50%)'
+        },
+        minWidth: '21%'
     },
     breadcrumbs: {
         display: 'flex',
         height: '100%',
         alignItems: 'flex-end',
-        color: '#FFFFFF'
+        color: '#FFFFFF',
+        whiteSpace: 'nowrap'
     },
     grow: {
         flexGrow: 1,
         display: 'flex',
-        justifyContent: 'flex-start',
-        alignItems: 'flex-end',
+        justifyContent: 'center',
+        alignItems: 'center',
         height: '100%',
         padding: '0 40px 0 0',
         '& .MuiButton-root':{
@@ -141,6 +153,16 @@ export default makeStyles(theme => ({
         '& .MuiButton-text':{
             padding: '0 20px'
         }
+    },
+    grow_buttons: {
+        flexGrow: 1,
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-end',
+        height: '100%',
+    },
+    alignItemCenter: {
+        alignItems: 'center',
     },
     rightMenu:{
         '& .MuiList-root':{
@@ -162,9 +184,6 @@ export default makeStyles(theme => ({
         display: 'inline-block'
       }
     },
-    notification:{ 
-        marginRight: '10px'
-    },
     small: {
         width: theme.spacing(3),
         height: theme.spacing(3),
@@ -181,13 +200,10 @@ export default makeStyles(theme => ({
         '&:hover': {
           backgroundColor: fade(theme.palette.common.white, 0.25),
         },
-        marginRight: theme.spacing(1),
-        marginLeft: '10px !important',
-        marginTop: '2px',
-        height: '26px',
-        width: '100%',
+        /* margin: '0 4px !important', */
+        height: 26,
+        width: '100%', 
         [theme.breakpoints.up('sm')]: {
-          marginLeft: '10px',
           width: 'auto',
         },
     },
@@ -205,7 +221,7 @@ export default makeStyles(theme => ({
     },
     inputInput: {
         padding: 0,
-        height: '2em',
+        height: 26,
         // vertical padding + font size from searchIcon
         paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
         transition: theme.transitions.create('width'),
@@ -354,10 +370,15 @@ export default makeStyles(theme => ({
             display: 'block'
         }
     },
-    clipIcon:{
+    buttonIcon: {
+        width: 30,
+        height: 30,
+        borderRadius: 0 ,
+        padding: 0,
+        /* margin: '0 4px', */
         '& svg':{
-            width: 24,
-            height: 24,
+            /* width: '2rem',
+            height: '2rem', */
             fill: '#5a5a5a',
             stroke: '#5a5a5a'
         },
@@ -366,7 +387,7 @@ export default makeStyles(theme => ({
                 fill: 'rgb(230, 0, 0)',
                 stroke: 'rgb(230, 0, 0)',
             }
-        }        
+        }
     },
     clipIconActive: {
         '& svg':{
@@ -403,10 +424,11 @@ export default makeStyles(theme => ({
     },
     calendly: {
         border:'1px solid #5a5a5a !important',
-        marginLeft: 15,
+        /* margin: '0 4px', */
         textTransform: 'initial',
+        color: 'inherit',
+        overflow: 'auto',
         padding: '3px 5px',
-        color: '#fff',
         '&:hover':{
             border:'1px solid #e60000 !important',
             color: '#e60000 !important'

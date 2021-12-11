@@ -14,6 +14,7 @@ import NewHeader from './components/NewHeader'
 import ConnectionBox from './components/ConnectionBox'
 import NavigationIcon from './components/NavigationIcon'
 import AssetsCommentsTimeline from './components/AssetsCommentTimeline'
+import ArrowButton from './components/ArrowButton'
 
 import './App.css'
 import { AirlineSeatReclineExtraOutlined } from '@material-ui/icons'
@@ -24,11 +25,13 @@ function useDimensions() {
 
 const App = () => {
   const targetRef = useRef()
+  const mainContainerRef = useRef()
   const illustrationRef = useRef()
   const [ data, setData] = useState(null)	
   const [ pdfView, setPDFView] = useState(false)
   const [ pdfFile, setPDFFile] = useState({document: '', form: '', agreement: ''})
   const [ pdfTab, setPdfTabIndex] = useState(2)
+  const [ arrow, setArrow] = useState(3)
   const [ topPosition, setTopPosition ] = useState(0) 
   const [ parent_width, setParentWidth ] = useState(0)
   const [ bottomToolbarPosition, setBottomToolbarPosition ] = useState(0)
@@ -44,25 +47,12 @@ const App = () => {
   const [ linkId, setLinkId ] = useState(null)
   const [ click, setClick ] = useState(0)
   const [ lineId, setLineId ] = useState(0)
-  const [ commentBarSize, setCommentBarSize ] = useState(`30%`)
   const [ asset, setAsset ] = useState(null)	
   const [ isDrag, setIsDrag] = useState(false)
   const [ isDragRight, setIsDragRight] = useState(false)
+  const [ toggleButtonType, setToggleButtonType ] = useState(false)
+  const [ companyButtonVisible, setCompanyButtonVisible ] = useState(false)
 
-  const [ openBar, setOpenBar ] = useState(false)
-  const [ openTypeBar, setTypeOpenBar ] = useState(false)
-  const [ openOtherPartyBar, setOtherPartyOpenBar ] = useState(false)
-  const [ openInventorBar, setInventorOpenBar ] = useState(false)
-  const [ openAssignmentBar, setAssignmentOpenBar ] = useState(false)
-  const [ openCustomerBar, setCustomerOpenBar ] = useState(false)
-  const [ openIllustrationBar, setIllustrationBar ] = useState(true)
-  const [ openCommentBar, setCommentBar ] = useState(true)
-  const [ openChartBar, setChartBar ] = useState(false)
-  const [ openAnalyticsBar, setAnalyticsBar ] = useState(false)
-  const [ openVisualizerBar, setVisualizeOpenBar ] = useState(false)
-  const [ assetFilesBarSize, setAssetFilesBarSize ] = useState(0)
-  const [ assetFilesBar, setAssetFilesBar ] = useState(false)
-  const [ openGoogleDriveBar, setGoogleDriveBar] = useState(false) 
   const apiURL = 'https://betapp.patentrack.com/' 
   /* const apiURL = 'http://localhost:3600/' */
 
@@ -95,7 +85,12 @@ const App = () => {
 			.then(response => {
 				if (response.status === 200) {
 					(async () => {
-						const dashData = await response.json();
+            const dashData = await response.json();
+            if(typeof dashData.general !== 'undefined' ) {
+              if(typeof dashData.general.logo_1 !== 'undefined') {
+                setCompanyLogo(dashData.general.logo_1)
+              }            
+            }
 						setData(dashData);
 					})();
 				} else {
@@ -105,6 +100,42 @@ const App = () => {
 		}
 	},[]);
     
+  useEffect(() => {
+    window.addEventListener('resize', checkContainer)
+    checkContainer()
+    return () => window.removeEventListener('resize', checkContainer)
+  }, [])
+
+  const checkContainer = (t) => {
+    /* setTimeout(() => {
+        if( mainContainerRef.current != null  && mainContainerRef.current != undefined) {                
+            const mainWidth = mainContainerRef.current.pane2.clientWidth, illustrationContainer = mainContainerRef.current.pane1.querySelector('#patentrackDiagramDiv')
+            if( illustrationContainer != null && illustrationContainer != undefined ) {
+                const illustrationWidth = illustrationContainer.clientWidth - 3
+                onHandleIllustrationSize(mainWidth - illustrationWidth)
+            } else {
+                checkContainer()
+            }
+        } else {
+            checkContainer()
+        }            
+    }, typeof t !== 'undefined' ? t : 1000) */
+  }
+
+  const onHandleIllustrationSize = (size) => {
+    if(mainContainerRef.current != null ) {
+        const containerSize = mainContainerRef.current.pane2.clientWidth
+        const windowWidth = size != undefined ? containerSize - size - 3 : mainContainerRef.current.pane1.querySelector('#patentrackDiagramDiv').clientWidth
+        const width = 620, 
+              constantX = 14.1, 
+              constantValue = parseFloat(constantX / width).toFixed(4),
+              xGap = (windowWidth * constantValue) - 3 
+        setGap({
+            ...gap, 
+            x: `${parseFloat(xGap).toFixed(1)}rem`
+        })
+    }
+  }
 
   const resizePane = (name, size) => {
 		localStorage.setItem(name, size)
@@ -119,7 +150,7 @@ const App = () => {
     setPDFFile({ document: '', form: '', agreement: '' }) 
     setUsptoMode( prev => {
       if(prev === false) {
-        setIllustrationSize('100%')
+        setIllustrationSize('99%')
       } else {
         setLeftBarSize('0%') 
         setAsset(asset)
@@ -146,7 +177,9 @@ const App = () => {
       if(linkId != obj.popuptop) {
         setLinkId(obj.popuptop)
         setUsptoMode(false)
-        setIllustrationSize('50%')
+        setIllustrationSize('65.8%')
+        setCompanyButtonVisible(true)
+        checkContainer(0)
         setPDFView(true)
         setPdfTabIndex(0)
         setPDFFile(
@@ -215,7 +248,7 @@ const App = () => {
       setPDFView(true)
       setPdfTabIndex(2) 
       if( usptoMode === true ) {
-        setLeftBarSize('50%')
+        setIllustrationSize('65.8%')
       } else {
         setLeftBarSize('100%')
       }
@@ -235,17 +268,21 @@ const App = () => {
     setLinkId(null)
     setUsptoMode(mode)
     setLineId(0)
-    setIllustrationSize('50%')
+    setIllustrationSize('65.8%')
     setPDFView(false)
     setConnectionMode(false)
     if( mode == true ) { 
+      checkContainer(0)
       setLeftBarSize('0%') 
+      setCompanyButtonVisible(true)
     }
-    if(mode === false) {
+    if(mode === false) {    
+      setCompanyButtonVisible(false)  
       setAsset(null)
       if(pdfView === false) {
         setIllustrationSize('100%')
       }
+      checkContainer(0)
     } else {
       setAsset(patentObj.original_number)
     }  
@@ -263,31 +300,24 @@ const App = () => {
       setUsptoMode(false)
       setConnectionMode(false)
       setPDFView(false)
-      setIllustrationSize('100%')  
+      setIllustrationSize('100%')
     }    
   }, [lineId])
 
-  const handleAlert = () => {
-
+  
+  const handleCompanyBarOpen = (event) => {
+    setToggleButtonType( !toggleButtonType )
+    setIllustrationSize('100%')
+    setCompanyButtonVisible(false)
+    setUsptoMode(false)
+    setConnectionMode(false) 
+    setPDFView(false)
+    checkContainer(0)
   }
 
-  const handleIllustrationBarOpen = () => {
+  const fullScreen = () => {
 
   }
-
-  const handleCommentBarOpen = () => {
-
-  }
-
-  const handleChartBarOpen = () => {
-
-  }
-
-  const handleAnalyticsBarOpen = () => {
-
-  }
-
-
   return (
     <div className={'root'}>
       <NewHeader logo={companyLogo}/>
@@ -296,6 +326,7 @@ const App = () => {
         className={`splitPane`}
         split="vertical"
         size={illustrationSize} 
+        onChange={checkContainer}
         onDragStarted={() => {
           setIsDrag(true);
         }}
@@ -308,13 +339,14 @@ const App = () => {
         pane2Style={{
           pointerEvents: isDrag ? 'none' : 'auto',
         }}
-        
+        ref={mainContainerRef}
       >
-        <div className={`illustration_comment_container`}>              
+        <div className={`illustration_comment_container`}>    
+          <ArrowButton arrowId={`arrow_company`} handleClick={handleCompanyBarOpen} buttonType={toggleButtonType} buttonVisible={companyButtonVisible} arrow={arrow}/>
           <div className={'forceStrech'} ref={targetRef}>
             {
               data != null && (
-                <PatentrackDiagram 
+                <PatentrackDiagram  
                   data={data} 
                   connectionBox={handleConnectionBox} 
                   comment={handleComment} 
@@ -331,7 +363,9 @@ const App = () => {
                   toggleShow3rdParities={toggleShow3rdParities}
                   usptoMode={usptoMode}
                   lineId={lineId}
-                  reset={onHandleReset}
+                  fullScreen={fullScreen}
+                  isFullscreenOpen={true}
+                  copyrights={true}
                 /> 
               )
             }

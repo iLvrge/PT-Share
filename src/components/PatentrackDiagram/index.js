@@ -8,8 +8,6 @@ import PatentLink from "./PatentLink";
 import PatentTimeline from "./PatentTimeline";
 
 import PatentTopTitle from "./PatentTopTitle";
-import PatentBottomUI from "./PatentBottomUI";
-
 import "./css/styles.css";
 import config from "./config.json";
 
@@ -318,7 +316,7 @@ class PatentrackDiagram extends React.Component {
     this.convertConfigValuesToPixels();
     this.getTitleDivHeight();
   }
-
+  
   getTitleDivHeight() {
     const dummyDiv = document.createElement("div");
 
@@ -392,7 +390,7 @@ class PatentrackDiagram extends React.Component {
 
     return Object.keys(assignments).length;
   }
-
+  
   parseData() {
     let dWidth = 0,
       dheight = 0,
@@ -1074,183 +1072,166 @@ class PatentrackDiagram extends React.Component {
 
   updateDiagram(event_) {
     let this_ = this;
+      
+        if(event_.currentTarget.getAttribute('type') == 'checkbox'){
+        
+           this.state.filters[event_.currentTarget.getAttribute('id').replace(' ', '')] = event_.currentTarget.checked;
+           event_.currentTarget.checked ? event_.currentTarget.parentNode.setAttribute('title', event_.currentTarget.getAttribute('id') + ' filter is on') : event_.currentTarget.parentNode.setAttribute('title', event_.currentTarget.getAttribute('id') + ' filter is off');
 
-    if (event_.currentTarget.getAttribute("type") == "checkbox") {
-      this.state.filters[
-        event_.currentTarget.getAttribute("id").replace(" ", "")
-      ] = event_.currentTarget.checked;
-      event_.currentTarget.checked
-        ? event_.currentTarget.parentNode.setAttribute(
-            "title",
-            event_.currentTarget.getAttribute("id") + " filter is on",
-          )
-        : event_.currentTarget.parentNode.setAttribute(
-            "title",
-            event_.currentTarget.getAttribute("id") + " filter is off",
-          );
-    } else {
-      if (
-        event_.currentTarget.parentNode.getAttribute("id") == "fastBackward"
-      ) {
-        this.state.assignments = this.state.assignees = [];
-      }
-
-      if (event_.currentTarget.parentNode.getAttribute("id") == "fastForward") {
-        let assignments = [],
-          assignees = [];
-        Object.keys(this.structure).forEach(key_ => {
-          assignments.push(Number(key_));
-          this.structure[key_].forEach(assignee_ => {
-            assignees.push(assignee_);
-          });
-        });
-
-        this.state.assignments = assignments;
-        this.state.assignees = assignees;
-      }
-
-      if (
-        event_.currentTarget.parentNode.getAttribute("id") == "prevAssignment"
-      ) {
-        let assignments = this.state.assignments,
-          assignees = [];
-
-        if (assignments.length > 0) {
-          assignments.pop();
-          assignments.forEach(assignment_ => {
-            this.structure[assignment_].forEach(k_ => assignees.push(k_));
-          });
-
-          this.state.assignments = assignments;
-          this.state.assignees = assignees;
-        }
-      }
-
-      if (
-        event_.currentTarget.parentNode.getAttribute("id") == "nextAssignment"
-      ) {
-        let assignments = this.state.assignments,
-          assignees = [];
-        if (assignments.length < this.state.limits.assignments) {
-          assignments.push(
-            Number(Object.keys(this.structure)[assignments.length]),
-          );
-
-          assignments.forEach(assignment_ => {
-            this.structure[assignment_].forEach(k_ => assignees.push(k_));
-          });
-
-          this.state.assignments = assignments;
-          this.state.assignees = assignees;
-        }
-      }
-
-      if (
-        event_.currentTarget.parentNode.getAttribute("id") == "prevAssignee"
-      ) {
-        let assignments = [],
-          assignees = this.state.assignees;
-
-        if (assignees.length > 0) {
-          assignees.pop();
-        }
-
-        if (assignees.length > 0) {
-          for (let i = 0; i < Object.keys(this.structure).length; i++) {
-            let key = Object.keys(this.structure)[i];
-            if (!this.assigmentIncludes(assignees[assignees.length - 1], key)) {
-              assignments.push(key);
-            } else {
-              assignments.push(key);
-              break;
-            }
-          }
-        }
-
-        this.state.assignments = assignments;
-        this.state.assignees = assignees;
-      }
-
-      if (
-        event_.currentTarget.parentNode.getAttribute("id") == "nextAssignee"
-      ) {
-        let assignments = [],
-          assignees = this.state.assignees;
-
-        if (assignees.length == 0) {
-          assignees.push(this.structure[Object.keys(this.structure)[0]][0]);
-          assignments.push(Object.keys(this.structure)[0]);
         } else {
-          var everyAssignee = Object.keys(this.structure).reduce((r_, k_) => {
-            return r_.concat(this.structure[k_]);
-          }, []);
-
-          for (let i = 0; i < everyAssignee.length; i++) {
-            if (assignees[assignees.length - 1] == everyAssignee[i]) {
-              if (i < this.state.limits.assignees - 1) {
-                assignees.push(everyAssignee[i + 1]);
-              }
-              break;
+            
+            const ID = event_.currentTarget.parentNode.getAttribute('id')
+            if(ID == 'fastBackward'){
+              this.state.assignments = this.state.assignees = [];
             }
-          }
+            
+            if(ID == 'fastForward'){
+        
+                let assignments = [], assignees = [];
+                Object.keys(this.structure).forEach((key_) =>{ 
+                    
+                        assignments.push(Number(key_)); 
+                        this.structure[key_].forEach(assignee_ => { assignees.push(assignee_); })
+
+
+                });
+                                
+                this.state.assignments = assignments;
+                this.state.assignees = assignees;
+            
+            }
+            
+            if(ID == 'prevAssignment'){
+        
+                let assignments = this.state.assignments, assignees = [];
+                
+                if(assignments.length > 0){
+                
+                    assignments.pop();
+                    assignments.forEach(assignment_ => {
+                
+                        this.structure[assignment_].forEach(k_ => assignees.push(k_));
+                
+                    })
+                
+                    this.state.assignments = assignments;
+                    this.state.assignees = assignees;
+                
+                }
+        
+            }
+            
+            if(ID == 'nextAssignment'){
+        
+                let assignments = this.state.assignments, assignees = [];
+                if(assignments.length < this.state.limits.assignments){
+                
+                    assignments.push(Number(Object.keys(this.structure)[assignments.length]));
+                    
+                    assignments.forEach(assignment_ => {
+                
+                        this.structure[assignment_].forEach(k_ => assignees.push(k_));
+                
+                    })
+                
+                    this.state.assignments = assignments;
+                    this.state.assignees = assignees;
+
+                
+                }
+
+            }
+            
+            if(ID == 'prevAssignee'){
+        
+                let assignments = [], assignees = this.state.assignees;
+        
+                if(assignees.length > 0){ assignees.pop(); }
+      
+                if(assignees.length > 0){
+                   
+                    for(let i = 0; i < Object.keys(this.structure).length; i++){
+
+                        let key = Object.keys(this.structure)[i];
+                        if(!this.assigmentIncludes(assignees[assignees.length - 1], key)){ assignments.push(key); }
+                        else { assignments.push(key); break; }
+
+
+                    }
+                
+                }
+                
+                this.state.assignments = assignments;
+                this.state.assignees = assignees;
+
+            }
+            
+            if(ID == 'nextAssignee'){
+        
+                let assignments = [], assignees = this.state.assignees;
+                
+                if(assignees.length == 0) { 
+                    
+                    assignees.push(this.structure[Object.keys(this.structure)[0]][0]); 
+                    assignments.push(Object.keys(this.structure)[0]);
+                }
+                else{
+                
+                    var everyAssignee =  Object.keys(this.structure).reduce((r_, k_) => { return r_.concat(this.structure[k_]); }, []);
+                    
+                    for(let i = 0; i < everyAssignee.length; i++){
+                        
+                        if(assignees[assignees.length - 1] == everyAssignee[i]){
+                            
+                            if(i < this.state.limits.assignees - 1) { assignees.push(everyAssignee[i + 1]); }
+                            break;
+                            
+                        }
+                        
+                    }
+
+                }
+                
+                this.state.assignments = assignments;
+                this.state.assignees = assignees;
+                
+            }
+            
+            document.getElementById('assignmentQuantative').innerHTML = this.state.assignments.length + ' / ' + (this.state.limits.assignments);
+            document.getElementById('assigneeQuantative').innerHTML = this.state.assignees.length + ' / ' + (this.state.limits.assignees);
+    
         }
+      
+        d3.selectAll('.PatentrackLink').nodes().map(node_ =>{
+            let id = Number(node_.attributes.id.value.replace('PatentrackLink_', ''));
+            let category = null;
 
-        this.state.assignments = assignments;
-        this.state.assignees = assignees;
-      }
-
-      document.getElementById("assignmentQuantative").innerHTML =
-        this.state.assignments.length + " / " + this.state.limits.assignments;
-      document.getElementById("assigneeQuantative").innerHTML =
-        this.state.assignees.length + " / " + this.state.limits.assignees;
-    }
-
-    d3.selectAll(".PatentrackLink")
-      .nodes()
-      .map(node_ => {
-        let id = Number(
-          node_.attributes.id.value.replace("PatentrackLink_", ""),
-        );
-        let category = null;
-
-        Object.keys(this.state.filters).forEach(key_ => {
-          if (node_.attributes.class.value.includes(key_)) {
-            return (category = key_);
-          }
+            Object.keys(this.state.filters).forEach(key_ => { if(node_.attributes.class.value.includes(key_)) { return category = key_ } });
+          
+            node_.attributes.visibility.value = (id < this.state.assignees.length && this.state.filters[category]) ? 'visible' : 'hidden';
+                
         });
-
-        node_.attributes.visibility.value =
-          id < this.state.assignees.length && this.state.filters[category]
-            ? "visible"
-            : "hidden";
-      });
-
-    d3.selectAll(".PatentrackNode")
-      .nodes()
-      .map(node_ => {
-        let children = [];
-
-        node_.attributes.children.value.split(",").forEach(link_ => {
-          let parsed = link_.split("|");
-
-          if (parsed.length > 1) {
-            if (
-              Number(parsed[0]) < this.state.assignees.length &&
-              this.state.filters[parsed[1].replace(" ", "")]
-            ) {
-              children.push(Number(parsed[0]));
-            }
-          }
+      
+        d3.selectAll('.PatentrackNode').nodes().map(node_ =>{
+                
+            let children = [];
+            
+            node_.attributes.children.value.split(',').forEach(link_ => {
+                
+                let parsed = link_.split('|');
+                 
+                if(parsed.length > 1){
+                    
+                    if(Number(parsed[0]) < this.state.assignees.length && this.state.filters[parsed[1].replace(' ', '')]) { children.push(Number(parsed[0])); } 
+                    
+                }
+                   
+            })
+        
+            node_.attributes.visibility.value = (node_.attributes.type.value == 'inventors' || children.length > 0) ? 'visible' : 'hidden';
+            d3.select('#PatentrackTimelineElement' + node_.id.replace('PatentrackNode', '')).attr('visibility', node_.attributes.visibility.value);
+            
         });
-
-        node_.attributes.visibility.value =
-          node_.attributes.type.value == "inventors" || children.length > 0
-            ? "visible"
-            : "hidden";
-        d3.select(
-          "#PatentrackTimelineElement" + node_.id.replace("PatentrackNode", ""),
-        ).attr("visibility", node_.attributes.visibility.value);
-      });
   }
 
   assigmentIncludes(assignee_, assignment_) {
@@ -1433,7 +1414,6 @@ class PatentrackDiagram extends React.Component {
     return v_ >= min_ && v_ <= max_;
   }
 
-
   render() {
     this.data = {
       inventors: [],
@@ -1444,7 +1424,6 @@ class PatentrackDiagram extends React.Component {
       indices: [],
       assignments: {},
     };
-
     const { showThirdParties } = this.props;
 
     this.parseData();
@@ -1547,7 +1526,7 @@ class PatentrackDiagram extends React.Component {
           id={"PatentrackLink_" + link_.id}
           key={"Link_" + i_}
           svg={"svg_" + this.prefix}
-          connectionBox={this.props.connectionBox} 
+          connectionBox={this.props.connectionBox}
           parent={"patentLinksGroup"}
           data={linkData}
           config={config}
@@ -1618,7 +1597,6 @@ class PatentrackDiagram extends React.Component {
           node={config.node}
           childrenLinks={children}
           pdfView={this.props.pdfView}
-          pdfFile={this.props.pdfFile}
           config={config}
         />
       );
@@ -1657,50 +1635,22 @@ class PatentrackDiagram extends React.Component {
     return (
       <div
         id={"patentrackDiagramDiv"}
-        /* ref={divElement => (this.divElement = divElement)} */       
+        ref={divElement => (this.divElement = divElement)}
       >
         <PatentTopTitle
           width={this.props.parentWidth}
           titleTop={this.props.titleTop}
           title={this.parseTitle()}
-        />
-        <div style={{ overflow: "auto", marginTop: "-23px", minHeight: "calc(100vh - 113px)", width: '100%' }} onClick={this.props.reset}>
-          <svg
-            className="diagram-container"
-            id={"svg_" + this.prefix}
-            {...svgParams}
-            key={this.generateHashhKet()}
-            mlndes="http://www.w3.org/2000/svg"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-          >
-            <g id="parentTimelineGrid"> 
-              <PatentTimeline
-                parent="parentTimelineGrid" 
-                params={params}
-                dates={timelines}
-                timeline={config.timeline}
-              /> 
-            </g>
-            <g id="patentLinksGroup">{links}</g>
-            <g id="patentNodesGroup">{nodes}</g>
-            <g transform={`translate(16,${svgParams.height ? svgParams.height - 20 : this.height })`}>
-              <text fill="#BDBDBD"><tspan>The illustrations, and the systems and methods by which they were created, are copyright</tspan> <tspan x="0" dy="14.25">protected and covered by several pending patent applications.</tspan></text>
-            </g>
-          </svg>
-        </div>
-        <PatentBottomUI
-          width={this.props.parentWidth}
           update={this.updateDiagram}
           uspto={this.props.uspto}
-          usptoMode={this.props.usptoMode}
-          showThirdParties={this.props.showThirdParties}
-          toggleShow3rdParities={this.props.toggleShow3rdParities}
           comment={this.props.comment}
           commentContent={this.props.data.comment}
           share={this.props.share}
           patent={this.props.data.general}
           colorScheme={config.colors}
           toolbarBottom={this.props.toolbarBottom}
+          fullScreen={this.props.fullScreen}
+          isFullscreenOpen={this.props.isFullscreenOpen}
           quantatives={{
             assignment: {
               current:
@@ -1718,6 +1668,34 @@ class PatentrackDiagram extends React.Component {
             },
           }}
         />
+        <div style={{ overflow: "auto", minHeight: "95%" }}>
+          <svg
+            className="diagram-container"
+            id={"svg_" + this.prefix}
+            {...svgParams}
+            key={this.generateHashhKet()}
+            mlndes="http://www.w3.org/2000/svg"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+          >
+            <g id="parentTimelineGrid">
+              <PatentTimeline
+                parent="parentTimelineGrid"
+                params={params}
+                dates={timelines}
+                timeline={config.timeline}
+              />
+            </g>
+            <g id="patentLinksGroup">{links}</g>
+            <g id="patentNodesGroup">{nodes}</g>
+            {
+              this.props.copyrights && (
+                <g transform={`translate(16,${svgParams.height ? svgParams.height - 20 : this.height })`}>
+                  <text fill="#BDBDBD"><tspan>The illustrations, and the systems and methods by which they were created, are copyright</tspan> <tspan x="0" dy="14.25">protected and covered by several pending patent applications.</tspan></text>
+                </g>
+              )
+            }            
+          </svg>
+        </div>        
       </div>
     );
   }

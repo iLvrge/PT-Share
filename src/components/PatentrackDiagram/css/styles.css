@@ -6,25 +6,20 @@ label {  cursor: pointer; padding: 2px 4px 2px 4px; }
 label span{ padding: 0px 4px 0px 8px; position: relative; vertical-align: middle; bottom: 2px; }
 
 #topTitle {
-    position: sticky;
-    top: 0;
-    padding: 0 0 0 16px;
-    font-size: 1.0rem;
+    display: flex;
+    padding: 0 9px 0 16px;
+    font-size: 1rem;
     color: #FFFFFF;
+    height: 47px;
+    min-height: 47px;
     background-color: #292929;
-    /* box-shadow: 0 0px 5px 3px #272b2d; */
-    opacity: 0.85;
+    border-bottom: 1px solid #5c5c5c;
+    box-shadow: 0 0px 5px 0 #2b2b2b;
+    /* opacity: 0.85; */
     text-align: left; 
     vertical-align: middle; 
     justify-content: flex-start; 
     align-items: center; 
-    width: 100%;
-    display: flex;
-    height: 56px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    border-bottom: 1px solid #5c5c5c;
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
      -khtml-user-select: none; /* Konqueror HTML */
@@ -33,46 +28,62 @@ label span{ padding: 0px 4px 0px 8px; position: relative; vertical-align: middle
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
 }
+#topTitle span.title{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
- .topTitle {
-    position: sticky;
-    top: 0;
-    background-color: #111111;
-    padding: 10px 4px 4px 16px;
-    font-size: 1.0rem;
-    color: #FFFFFF;
-    opacity: 0.85;
-    text-align: left; 
-    vertical-align: middle; 
-    justify-content: flex-start; 
-    align-items: center; 
-    
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Old versions of Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome, Edge, Opera and Firefox */
+#topUIToolbarExpanded{
+    /* display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-grow: 1; */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: auto;
+}
 
+#topUIToolbarExpanded .MuiIconButton-root{
+    border-radius: 0;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    color: #fff;
+}
+#topUIToolbarExpanded .MuiIconButton-root svg{
+    width: 1.2rem;
+    height: 1.2rem;
+}
+#topUIToolbarExpanded .uspto_logo{
+    width: 75px;
+}
+
+.uspto_logo_container{
+    display: flex;
+    align-items: center;
 }
 
 #bottomUIToolbarContainer {
     width: 100%;
-    height: 36px;
+    height: 32px;
     position: sticky;
-    bottom: 0; 
+    bottom: 0;
+    min-width: 100vw;
 }
+
+
 
 #bottomUIToolbarExpanded {
     display: flex;
     /* justify-content: space-between; */
     width: 100%;
-    height: 36px;
+    height: 32px;
     grid-template-columns: repeat(18, max-content) repeat(3, 1fr) repeat(3, max-content);
     grid-row-gap: 0px;
-    background-color: #292929;
-    /* box-shadow: 0 0px 5px 0 #272B2D; */
+    background-color: #424242;
+    box-shadow: 0 0px 5px 0 #2b2b2b;
     font-size: 12px;
     color: #FFFFFF;
     opacity: 0.85;
@@ -122,11 +133,9 @@ label span{ padding: 0px 4px 0px 8px; position: relative; vertical-align: middle
     line-height: 32px; 
     justify-content: center; 
     align-items: center; 
-    width: 2rem;
 }
 .toolbarUIElement svg {    position: unset !important;  }
 .toolbarUIGap { 
-  width: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -183,9 +192,6 @@ label span{ padding: 0px 4px 0px 8px; position: relative; vertical-align: middle
     height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    background: #424242; 
-    overflow: hidden;
 }
 
 #patentrackDiagramDiv svg { 
@@ -203,19 +209,41 @@ label span{ padding: 0px 4px 0px 8px; position: relative; vertical-align: middle
 .wrapText tspan:nth-child(3){ 
     display: none;
 }
-div.tooltip_title { 
+div.tooltip_title {
     position: absolute;			
     text-align: left;			
     /* margin: 0 auto; */
     text-align: left;
     width: auto;
-    padding: 5px 10px;	
-    border: 0;	
+    max-width: 500px;
+    border: 0 !important;	
+    border-radius: 0 !important;	
     background: #121212;
     pointer-events: none;
-    font-weight: 500; 
-    font-size: 0.8rem;
-    white-space: nowrap;
+    font-weight: inherit; 
+    font-size: 12.25px;
+    white-space: normal;
+}
+.tooltipContainer {
+    display: flex;
+    justify-content: center;
+}
+.tooltipContainer  .svg-inline--fa.fa-w-14{
+    /* width: 1rem;
+    height: 1rem; */
+}
+.tooltip {
+    font-size: 1rem;
+    border-radius: 0;
+}
+.uspto_logo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 5px;
+}
+.uspto_logo img{
+    width: 40px;
 }
 /*
 #toobarUIGap0 { grid-area: 1 / 1 / 2 / 2; text-align: center; justify-content: center; align-items: center; }

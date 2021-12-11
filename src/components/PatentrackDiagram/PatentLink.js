@@ -324,40 +324,6 @@ export default function PatentLink(props) {
           .node()
           .getBBox();
         d3.selectAll("#dummy").remove();
-
-        /* d3.select("#" + svg)
-          .append("rect")
-          .attr("x", dx)
-          .attr("y", dy)
-          .attr("rx", config.link.tooltip.corners)
-          .attr("ry", config.link.tooltip.corners)
-          .attr("class", "link-tooltip")
-          .attr("width", bbox.width * 1.4)
-          .attr("height", bbox.height * 1.4)
-          .attr("fill", config.node.background)
-          .attr("stroke", config.colors[
-            data.category.charAt(0).toLowerCase() +
-              data.category.slice(1).replace(" ", "")
-          ])
-          .attr("opacity", config.node.opacity);
-
-        d3.select("#" + svg) 
-          .append("text")
-          .attr("x", dx + 70 )
-          .attr("y", dy )
-          .attr("class", "link-tooltip")
-          .attr("fill", config.node.fontColor)
-          .attr("font-size", config.link.tooltip.fontSize)
-          .attr("text-anchor", "middle")
-          .attr("alignment-baseline", "middle")          
-          .html("<tspan dx='0rem' dy='1.1rem'>"+ data.category + "</tspan><tspan dx='-2.9rem' dy='1.5rem'>Execution: " +
-                  time2String(data.line.date) +
-                  '</tspan><tspan dx="-8.2rem" dy="1.1rem">' +
-                  "Recorded: " +
-                  time2String(data.line.recorded) +
-                  "</tspan>",
-          ); */  
-          
           let gtooltip = d3.select("#" + svg)
                         .append('g')
                         .attr("class", "link-tooltip")
@@ -531,5 +497,5 @@ export default function PatentLink(props) {
       )
       .attr("fill", data.color);
   }, []);
-  return null;
+  return null; 
 }

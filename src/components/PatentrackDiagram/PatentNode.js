@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-
 import moment from "moment";
 import * as d3 from "d3";
 
@@ -51,12 +50,12 @@ function wrapText(str, width, lines, node) {
 
 
 export default function PatentNode(props) {
-  const { node, data, config, childrenLinks, parent, pdfView, pdfFile } = props
+  const { node, data, config, childrenLinks, parent, pdfView, pdfFile } = props;
   function unsetAllActiveLink() {
     const element = document.querySelector(
       "g#patentLinksGroup",
     )
-    const allLink = element.querySelectorAll(`[id*="link_"]`)
+    const allLink = element.querySelectorAll(`[id*="link_"]`) 
       
     if(allLink != null && allLink.length > 0) {
       [].forEach.call(allLink, function(el) {
@@ -68,8 +67,6 @@ export default function PatentNode(props) {
   useEffect(() => {
     let dx = node.leftOffset + data.x * node.gap.x;
     let dy = node.topOffset + data.y * node.gap.y;
-    /* console.log('dx',data.typeID.type, node.leftOffset, data.x, node.gap.x)
-    console.log('dy',data.typeID.type, node.topOffset, data.y, node.gap.y) */
     let offsetX = "0.6rem";
     let datesOffsetX = "2.2rem";
 
@@ -82,7 +79,7 @@ export default function PatentNode(props) {
         childrenLinks.map(link_ => link_.props.data.category.replace(" ", "")),
       ),
     );
-       
+
     let g = d3
       .select("#" + parent)
       .append("g")
@@ -128,35 +125,33 @@ export default function PatentNode(props) {
       .attr('class', 'wrapText')
       .attr('title', typeof data.json != 'undefined' && typeof data.json.original_name !== 'undefined' && data.json.original_name != '' && data.json.original_name !== null ? data.json.original_name : data.name)
       .on("mouseover", () => {
-        let dx = d3.event.offsetX, dy = d3.event.offsetY
-        d3.select("#patentrackDiagramDiv")
-            .append("div")	
-            .attr("class", "tooltip_title MuiTooltip-tooltip")	
-            .html(typeof data.json != 'undefined' && typeof data.json.original_name !== 'undefined' && data.json.original_name != '' && data.json.original_name !== null ? data.json.original_name : data.name)
-            .style("left", (dx + 30) + "px")		
-            .style("top", (dy) + "px");	
-       /*  let fromElement = d3.event.fromElement
-        if( fromElement != null && fromElement.nodeName != 'rect') {
+        //let dx = d3.event.offsetX, dy = d3.event.offsetY
+        /* let fromElement = d3.event.fromElement
+        if(fromElement != null && fromElement.nodeName != 'rect') {
           const path =  d3.event.path
           if(path.length > 0) {
             const findIndex = path.findIndex( r => r.nodeName == 'g' && r.id.indexOf('PatentrackNode') !== -1)
             if(findIndex !== 1) {
               fromElement = path[findIndex].querySelector('rect')
             }
-          }
-        } 
-        if( fromElement != null ) {
-          const getBoundElementRec = fromElement.getBoundingClientRect()
-          d3.select("#patentrackDiagramDiv")
-            .append("div")	
-            .attr("class", "tooltip_title")	
-            .html(data.name)
-            .style("left", (getBoundElementRec.left + 16) + "px")		
-            .style("top", (getBoundElementRec.top - 41) + "px");	
-        } */        
+          } 
+        }
+        const getBoundElementRec = fromElement.getBoundingClientRect() */
+        //let pos = d3.select(d3.event.fromElement).node().getBoundingClientRect();
+
+        d3.select("#patentrackDiagramDiv")
+          .append("div")	
+          .attr("class", "tooltip_title MuiTooltip-tooltip")	
+          .html(typeof data.json != 'undefined' && typeof data.json.original_name !== 'undefined' && data.json.original_name != '' && data.json.original_name !== null ? data.json.original_name : data.name)
+          /* .style('left', `${pos['x']}px`)
+          .style('top', `${(window.pageYOffset  + pos['y'] - 100)}px`); */
+          /* .style("left", `${d3.event.pageX }px`)		
+          .style("top", `${d3.event.pageY }px`);	  */
+          .style("left", `${d3.event.offsetX + 30}px`)		
+          .style("top", `${(d3.event.offsetY)}px`);	  
       })
-      .on("mouseout", () => { 
-        d3.selectAll(".tooltip_title").remove(); 
+      .on("mouseout", () => {
+        d3.selectAll(".tooltip_title").remove();
       })
       .text(data.name) 
       .call(
@@ -164,7 +159,7 @@ export default function PatentNode(props) {
         node.width * node.maxLineLength,
         node.numberOfLines,
         node,
-      ); 
+      );
 
     /* if (data.document != null && data.document != "") {
       g.append("svg:image")
@@ -178,10 +173,10 @@ export default function PatentNode(props) {
           unsetAllActiveLink()
           const targetElement = d3.event.target
           const togglePDF = targetElement.getAttribute('href')
-          
+          console.log('togglePDF', togglePDF, targetElement)
           if( togglePDF == '' || togglePDF  == config.pdfIcon ) {
             targetElement.setAttribute('href',config.pdfIconActive)
-           
+            console.log('SET IMAGE')
             const element = d3.event.target.closest(
               "g#patentNodesGroup",
             )

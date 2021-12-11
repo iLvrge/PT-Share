@@ -94,7 +94,7 @@ const NewHeader = ({logo}) => {
           }
         </span>
         <div className={classes.grow} style={{position: 'relative'}}>  
-          
+          Copyright protected and covered by several pending patent applications.
         </div> 
         <div className={classes.rightPanel}>      
             <Button className={classes.calendly} onClick={handleScheduleViaHubspot}>

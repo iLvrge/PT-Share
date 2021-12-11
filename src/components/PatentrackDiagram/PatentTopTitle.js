@@ -1,6 +1,23 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faShareAlt, 
+  faEllipsisV,
+  faAngleDoubleLeft,
+  faAngleDoubleRight,
+  faAngleLeft,
+  faAngleRight,
+  faFastBackward,
+  faFastForward,
+  faCheckSquare,
+  faSquare,
+  faExpand
+} from "@fortawesome/free-solid-svg-icons";
+import { Tooltip, Typography, Zoom, Drawer, Menu, MenuItem, ListItemIcon, ListItemText, Checkbox, Divider, IconButton, Badge } from "@material-ui/core";
+import { Fullscreen } from '@material-ui/icons'
+import { FaLightbulb } from "react-icons/fa";
 import * as d3 from 'd3'
 
 class PatentTopTitle extends React.Component {
@@ -9,27 +26,232 @@ class PatentTopTitle extends React.Component {
        
     super(props_)
       
-    this.state = { expand: true }
+    this.state = { expand: true,  right: false, anchorEl: null}
     this.update = this.update.bind(this)
          
   }
     
-  update () {
-    
+  update () {    
     this.setState({ expand: !this.state.expand })
+  }
 
+  toggleDrawer = (event, open) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift') ) {
+      return;
+    }
+    console.log(event.currentTarget)
+    this.setState({
+      anchorEl: open === true ? event.currentTarget : null
+    })
   }
     
   render () {
-            
-   return (
-        
-            <div id='topTitle'>{this.props.title}</div>
+    const {
+      classes,
+      usptoMode,
+      showThirdParties,
+      toggleShow3rdParities,
+    } = this.props;
+    const { anchorEl } = this.state;
+    const open = Boolean(anchorEl);
+    let showFilters = this.state.filters
+      ? {
+          display: "inline-block",
+          transform: "translate(0%, -55%)",
+        }
+      : { display: "none" };
 
+    let filters = Object.keys(this.props.colorScheme).map((category_, i_) => {
+      let filterElement = (
+        category_.charAt(0).toUpperCase() + category_.slice(1)
+      )
+        .replace(/([A-Z])/g, " $1")
+        .trim();
+      let hex = this.props.colorScheme[category_];
+
+      return (
+        <MenuItem
+          key={"PatentrackDiagramFilterElement_" + i_}
+          className={`iconItem`}
+        >
+          <ListItemIcon>
+            <Checkbox
+              defaultChecked={true}
+              id={filterElement}
+              onChange={this.props.update}
+            />
+          </ListItemIcon>
+          <ListItemText style={{ color: hex }}>{filterElement}</ListItemText>
+        </MenuItem>
+      );
+    });
+    
+    
+   return (
+          <React.Fragment>
+            <div id='topTitle'>
+              <span className={'title'} title={this.props.title}>{this.props.title}</span>
+              <div id="topUIToolbarExpanded">
+                <IconButton
+                  onClick={(event) => {this.toggleDrawer(event, true)}}
+                >
+                  <Tooltip 
+                      className='tooltip'
+                      title={
+                        <Typography color="inherit" variant='body2'>{'Toolbar'}</Typography>
+                      }
+                      placement='top'
+                      enterDelay={0}
+                      TransitionComponent={Zoom} TransitionProps={{ timeout: 0 }}
+                      > 
+                      <Badge badgeContent={0} color="secondary"> 
+                        <FontAwesomeIcon
+                          icon={faEllipsisV}
+                        />
+                      </Badge>   
+                  </Tooltip>                     
+                </IconButton>     
+                <IconButton
+                  onClick={() => this.props.uspto(!usptoMode)}
+                  className={'uspto_logo'}
+                >
+                  <Tooltip 
+                  className='tooltip'
+                  title={
+                    <Typography color="inherit" variant='body2'>{'USPTO'}</Typography>
+                  }
+                  placement='top'
+                  enterDelay={0}
+                  TransitionComponent={Zoom} TransitionProps={{ timeout: 0 }}
+                  >
+                    <Badge badgeContent={0} color="secondary">   
+                      <FaLightbulb
+                        className={usptoMode === true ? 'active' : '' }
+                      />
+                      <span className={'uspto_logo_container'}><img src={'/assets/images/logo-micro.png'}/></span>
+                    </Badge>
+                  </Tooltip>
+                </IconButton>
+                <IconButton
+                  onClick={() => this.props.share(this.props.patent)}
+                >
+                  <Tooltip 
+                  className='tooltip'
+                  title={
+                    <Typography color="inherit" variant='body2'>{'Share a diagram'}</Typography>
+                  }
+                  placement='top'
+                  enterDelay={0}
+                  TransitionComponent={Zoom} TransitionProps={{ timeout: 0 }}
+                  >
+                    <Badge badgeContent={0} color="secondary"> 
+                      <FontAwesomeIcon
+                        icon={faShareAlt}                          
+                      />
+                    </Badge>
+                  </Tooltip>
+                </IconButton>
+                {
+                  !this.props.isFullscreenOpen && (
+                    <IconButton
+                      onClick={() => this.props.fullScreen()}
+                    >
+                      <Tooltip 
+                      className='tooltip'
+                      title={
+                        <Typography color="inherit" variant='body2'>{'Full Screen'}</Typography>
+                      }
+                      placement='top'
+                      enterDelay={0}
+                      TransitionComponent={Zoom} TransitionProps={{ timeout: 0 }}
+                      >
+                        <Badge badgeContent={0} color="secondary"> 
+                          <FontAwesomeIcon
+                            icon={faExpand}                          
+                          />
+                        </Badge>
+                      </Tooltip>
+                    </IconButton>
+                  )
+                }                
+              </div>              
+            </div>
+            <Menu
+              open={open}
+              anchorEl={anchorEl}
+              onClose={(event) => {this.toggleDrawer(event, false)}}              
+              disableAutoFocusItem
+              PaperProps={{    
+                style: {
+                  left: '50%',
+                  transform: 'translateX(-29%) translateY(9%)',
+                }
+              }}
+            >
+              <MenuItem className={`iconItem`}>
+                <ListItemIcon id="fastBackward">
+                  <FontAwesomeIcon
+                    icon={faFastBackward}
+                    onClick={this.props.update}
+                  />
+                </ListItemIcon>
+                <ListItemText><span style={{visibility: 'hidden'}}>
+                  {this.props.quantatives.assignment.current} /{" "}
+                  {this.props.quantatives.assignment.total}</span>
+                </ListItemText>
+                <ListItemIcon id="fastForward">
+                  <FontAwesomeIcon
+                    icon={faFastForward}
+                    onClick={this.props.update}
+                  />
+                </ListItemIcon>
+                <ListItemText></ListItemText>
+              </MenuItem>
+              <MenuItem className={`iconItem`}>
+                <ListItemIcon id="prevAssignment">
+                  <FontAwesomeIcon
+                    icon={faAngleDoubleLeft}
+                    onClick={this.props.update}
+                  />
+                </ListItemIcon>
+                <ListItemText id="assignmentQuantative">
+                  {this.props.quantatives.assignment.current} /{" "}
+                  {this.props.quantatives.assignment.total}
+                </ListItemText>
+                <ListItemIcon id="nextAssignment">
+                  <FontAwesomeIcon
+                    icon={faAngleDoubleRight}
+                    onClick={this.props.update}
+                  />
+                </ListItemIcon>   
+                <ListItemText></ListItemText>             
+              </MenuItem>
+              <MenuItem className={`iconItem`}>
+                <ListItemIcon id="prevAssignee">
+                  <FontAwesomeIcon
+                    icon={faAngleLeft}
+                    onClick={this.props.update}
+                  />
+                </ListItemIcon>
+                <ListItemText id="assigneeQuantative">
+                  {this.props.quantatives.assignee.current} /{" "}
+                  {this.props.quantatives.assignee.total}
+                </ListItemText>
+                <ListItemIcon id="nextAssignee">
+                  <FontAwesomeIcon
+                    icon={faAngleRight}
+                    onClick={this.props.update}
+                  />
+                </ListItemIcon>   
+                <ListItemText></ListItemText>             
+              </MenuItem>       
+              <Divider />       
+              {filters}
+            </Menu>      
+          </React.Fragment>
        )
         
   }
     
 }
-
-export default PatentTopTitle
+export default PatentTopTitle;
