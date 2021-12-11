@@ -379,7 +379,7 @@ const App = () => {
             setIsDragRight(true);
           }}
           onDragFinished={size => {
-            setIsDragRight(false);
+            setIsDragRight(false);   
           }}
           pane1Style={{
             pointerEvents: isDragRight || isDrag ? 'none' : 'auto',
