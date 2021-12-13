@@ -23,7 +23,7 @@ function wrapText(str, width, lines, node) {
         .attr("x", 0)
         .attr("y", y)
         .attr("dy", text.attr("dy"));
-    while ((word = words.pop())) {
+    while ((word = words.pop())) {   
       line.push(word);
       tspan.text(line.join(" "));
       if (tspan.node().getComputedTextLength() > width) {
@@ -50,12 +50,12 @@ function wrapText(str, width, lines, node) {
 
 
 export default function PatentNode(props) {
-  const { node, data, config, childrenLinks, parent, pdfView, pdfFile } = props;
+  const { node, data, config, childrenLinks, parent, pdfView } = props;
   function unsetAllActiveLink() {
     const element = document.querySelector(
       "g#patentLinksGroup",
     )
-    const allLink = element.querySelectorAll(`[id*="link_"]`) 
+    const allLink = element.querySelectorAll(`[id*="link_"]`)
       
     if(allLink != null && allLink.length > 0) {
       [].forEach.call(allLink, function(el) {

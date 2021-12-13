@@ -8,6 +8,7 @@ import PatentLink from "./PatentLink";
 import PatentTimeline from "./PatentTimeline";
 
 import PatentTopTitle from "./PatentTopTitle";
+
 import "./css/styles.css";
 import config from "./config.json";
 
@@ -1651,6 +1652,9 @@ class PatentrackDiagram extends React.Component {
           toolbarBottom={this.props.toolbarBottom}
           fullScreen={this.props.fullScreen}
           isFullscreenOpen={this.props.isFullscreenOpen}
+          toggleShow3rdParities={this.props.toggleShow3rdParities}
+          showThirdParties={this.props.showThirdParties}
+          usptoMode={this.props.usptoMode}
           quantatives={{
             assignment: {
               current:
@@ -1692,10 +1696,10 @@ class PatentrackDiagram extends React.Component {
                 <g transform={`translate(16,${svgParams.height ? svgParams.height - 20 : this.height })`}>
                   <text fill="#BDBDBD"><tspan>The illustrations, and the systems and methods by which they were created, are copyright</tspan> <tspan x="0" dy="14.25">protected and covered by several pending patent applications.</tspan></text>
                 </g>
-              )
-            }            
+              )  
+            }  
           </svg>
-        </div>        
+        </div>
       </div>
     );
   }

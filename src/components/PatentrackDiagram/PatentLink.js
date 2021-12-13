@@ -280,7 +280,7 @@ export default function PatentLink(props) {
 
       straightPath = getStraightMedianPoints(data);
     }
-    updatePositions();
+    updatePositions();    
     //set CSS classes for filters and playback
     let g = d3
       .select("#" + parent)
@@ -301,7 +301,7 @@ export default function PatentLink(props) {
     g.append("path")
       .attr("d", straightPath)
       .attr("stroke-width", config.link.hitArea * 2)
-      .attr("stroke", "transparent")
+      .attr("stroke", "transparent")      
       .attr("fill", "none")
       .attr("cursor", "pointer")
       .on("mouseover", () => {
@@ -324,7 +324,7 @@ export default function PatentLink(props) {
           .node()
           .getBBox();
         d3.selectAll("#dummy").remove();
-          let gtooltip = d3.select("#" + svg)
+        let gtooltip = d3.select("#" + svg)
                         .append('g')
                         .attr("class", "link-tooltip")
                         .attr("visibility", "visible")
@@ -367,10 +367,10 @@ export default function PatentLink(props) {
                   "Recorded: " +
                   time2String(data.line.recorded) +
                   "</tspan>"
-            );           
+            );         
       })
       .on("mouseout", () => {
-        d3.selectAll(".link-tooltip").remove();  
+        d3.selectAll(".link-tooltip").remove();
       })
       .on("click", () => {
         //passing referenced data from json.popup and handleComment
@@ -391,10 +391,11 @@ export default function PatentLink(props) {
               el.setAttribute('stroke-width',config.link.width)
             }
           })
-        } 
+        }
 
         connectionBox(data.line, comment);
       });
+
     g.append("path")
       .attr("d", straightPath)
       .attr("id", "link_" + data.id)
@@ -497,5 +498,5 @@ export default function PatentLink(props) {
       )
       .attr("fill", data.color);
   }, []);
-  return null; 
+  return null;
 }

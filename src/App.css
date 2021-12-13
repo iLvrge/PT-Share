@@ -180,6 +180,13 @@ body {
   background: #424242;
 }
 
+.MuiPaper-root{
+  background-color:#424242 !important;
+  color:#fff !important;
+}
+.MuiPaper-root svg {
+  color: #fff;
+}
 
 @keyframes App-logo-spin {
   from {
