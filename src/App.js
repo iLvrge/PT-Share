@@ -263,7 +263,7 @@ const App = () => {
     }    
 	}
 
-  const handleUSPTO = (mode, patentObj) => { 
+  const handleUSPTO = (mode) => { 
     setClick(0)   
     setLinkId(null)
     setUsptoMode(mode)
@@ -284,7 +284,7 @@ const App = () => {
       }
       checkContainer(0)
     } else {
-      setAsset(patentObj.original_number)
+      setAsset(data.general.original_number)
     }  
   }
 
